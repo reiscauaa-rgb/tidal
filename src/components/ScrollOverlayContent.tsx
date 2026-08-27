@@ -184,18 +184,19 @@ export default function ScrollOverlayContent({ progress }: ScrollOverlayContentP
       >
         <a
           href="#ingressos"
+          className="animate-pulse-wave"
           style={{
             display: "inline-flex",
             alignItems: "center",
-            padding: "14px 36px",
+            padding: "16px 40px",
             fontFamily: "Inter, sans-serif",
-            fontSize: "0.7rem",
+            fontSize: "0.8rem",
             letterSpacing: "0.3em",
             textTransform: "uppercase",
-            fontWeight: 700,
-            color: "white",
-            background: "linear-gradient(135deg, #063E52 0%, #4A2B29 100%)",
-            boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
+            fontWeight: 800,
+            color: "var(--ocean-dark)",
+            background: "linear-gradient(135deg, var(--sunrise-gold) 0%, var(--coral) 100%)",
+            borderRadius: "6px",
             minHeight: "52px",
             textDecoration: "none",
           }}
