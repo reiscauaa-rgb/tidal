@@ -29,13 +29,14 @@ export default function HeroSection() {
   const [videoEnded, setVideoEnded] = useState(false);
   const lastTouchY = useRef<number | null>(null);
 
-  // Tune: how many seconds of video per pixel of scroll delta
-  // Smaller = slower video advance per scroll tick (feels more cinematic)
-  const SECONDS_PER_DELTA_PX = 0.008;
-  const SECONDS_PER_TOUCH_PX = 0.012;
-
   const handleVideoEnd = useCallback(() => {
     setVideoEnded(true);
+  }, []);
+
+  const handleVideoRewound = useCallback(() => {
+    // Fired when the video fully rewinds back to 0
+    // We can ensure the videoEnded is false here
+    setVideoEnded(false);
   }, []);
 
   const handleProgressChange = useCallback((p: number) => {
@@ -44,8 +45,6 @@ export default function HeroSection() {
 
   // ── Lock / unlock body scroll ────────────────────────────────────
   useEffect(() => {
-    // We no longer blindly lock the body scroll. 
-    // We only lock it if the video is NOT ended, OR if we are scrolling back up into it.
     if (!videoEnded) {
       document.body.style.overflow = "hidden";
     } else {
@@ -56,44 +55,47 @@ export default function HeroSection() {
     };
   }, [videoEnded]);
 
-  // ── Wheel interception ───────────────────────────────────────────
+  // ── Interaction Interception ───────────────────────────────────────────
   useEffect(() => {
-    const onWheel = (e: WheelEvent) => {
-      if (videoEnded) {
-        // If we are at the top of the window and scrolling UP, we want to re-lock and rewind
-        if (window.scrollY <= 0 && e.deltaY < 0) {
-          e.preventDefault();
-          setVideoEnded(false);
-          videoRef.current?.advance(e.deltaY * SECONDS_PER_DELTA_PX);
-        }
-        // Otherwise, let normal scrolling happen
-        return;
+    const handleForwardInteraction = () => {
+      if (!videoEnded) {
+        videoRef.current?.playForward();
       }
-
-      e.preventDefault();
-      videoRef.current?.advance(e.deltaY * SECONDS_PER_DELTA_PX);
     };
 
-    window.addEventListener("wheel", onWheel, { passive: false });
-    return () => window.removeEventListener("wheel", onWheel);
-  }, [videoEnded]);
+    const handleBackwardInteraction = () => {
+      if (videoEnded && window.scrollY <= 0) {
+        setVideoEnded(false);
+        videoRef.current?.playBackward();
+      }
+    };
 
-  // ── Touch interception ───────────────────────────────────────────
-  useEffect(() => {
+    const onWheel = (e: WheelEvent) => {
+      if (videoEnded) {
+        if (window.scrollY <= 0 && e.deltaY < 0) {
+          e.preventDefault();
+          handleBackwardInteraction();
+        }
+        return;
+      }
+      e.preventDefault();
+      if (e.deltaY > 0) {
+        handleForwardInteraction();
+      }
+    };
+
     const onTouchStart = (e: TouchEvent) => {
       lastTouchY.current = e.touches[0].clientY;
     };
 
     const onTouchMove = (e: TouchEvent) => {
       if (lastTouchY.current === null) return;
-      const delta = lastTouchY.current - e.touches[0].clientY; // positive = swipe up = forward
+      const delta = lastTouchY.current - e.touches[0].clientY;
       
       if (videoEnded) {
-        // If at top of page and swiping down (delta < 0), re-engage video
         if (window.scrollY <= 0 && delta < 0) {
            e.preventDefault();
-           setVideoEnded(false);
-           videoRef.current?.advance(delta * SECONDS_PER_TOUCH_PX);
+           handleBackwardInteraction();
         }
         lastTouchY.current = e.touches[0].clientY;
         return;
@@ -101,62 +103,63 @@ export default function HeroSection() {
 
       e.preventDefault();
       lastTouchY.current = e.touches[0].clientY;
-      videoRef.current?.advance(delta * SECONDS_PER_TOUCH_PX);
+      if (delta > 0) handleForwardInteraction();
     };
 
     const onTouchEnd = () => {
       lastTouchY.current = null;
     };
 
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
-    window.addEventListener("touchend", onTouchEnd, { passive: true });
-
-    return () => {
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove);
-      window.removeEventListener("touchend", onTouchEnd);
-    };
-  }, [videoEnded]);
-
-  // ── Keyboard interception ────────────────────────────────────────
-  useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (["INPUT", "TEXTAREA"].includes((e.target as HTMLElement).tagName)) return;
       
       if (videoEnded) {
         if (window.scrollY <= 0 && ["ArrowUp", "PageUp"].includes(e.key)) {
           e.preventDefault();
-          setVideoEnded(false);
-          videoRef.current?.advance(-0.5);
+          handleBackwardInteraction();
         }
         return;
       }
 
       if (["ArrowDown", " ", "PageDown"].includes(e.key)) {
         e.preventDefault();
-        videoRef.current?.advance(0.5);
+        handleForwardInteraction();
       }
       if (["ArrowUp", "PageUp"].includes(e.key)) {
         e.preventDefault();
-        videoRef.current?.advance(-0.5);
+        // If we want to support rewinding before it ends
+        videoRef.current?.playBackward();
       }
     };
 
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    // Also trigger forward play on click if not ended
+    window.addEventListener("click", handleForwardInteraction);
+
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("click", handleForwardInteraction);
+    };
   }, [videoEnded]);
 
   return (
     <section
-      className="relative w-full"
+      className="relative w-full cursor-pointer"
       style={{ height: "100vh" }}
-      aria-label="Abertura TIDAL FEST — role para assistir"
+      aria-label="Abertura TIDAL FEST — role ou clique para assistir"
     >
-      {/* Video layer — absolute fills 100vh */}
       <HeroScrollVideo
         ref={videoRef}
         onVideoEnd={handleVideoEnd}
+        onVideoRewound={handleVideoRewound}
         onProgressChange={handleProgressChange}
       />
 
