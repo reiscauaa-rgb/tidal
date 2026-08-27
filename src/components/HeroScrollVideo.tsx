@@ -95,7 +95,7 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
 
       window.addEventListener("touchstart", unlockVideo, { passive: true });
       window.addEventListener("wheel", unlockVideo, { passive: true });
-      window.addEventListener("click", unlockVideo, { passive: true });
+      const PLAYBACK_SPEED = 1.5;
 
       const tick = (now: number) => {
         const v = videoRef.current;
@@ -106,7 +106,7 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
           lastTimeRef.current = now;
 
           if (directionRef.current !== 0) {
-            const newTime = v.currentTime + directionRef.current * dt;
+            const newTime = v.currentTime + (directionRef.current * dt * PLAYBACK_SPEED);
             const clamped = Math.max(0, Math.min(newTime, v.duration - 0.01));
             v.currentTime = clamped;
 

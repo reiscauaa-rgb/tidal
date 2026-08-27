@@ -33,8 +33,9 @@ export default function ScrollOverlayContent({ progress }: ScrollOverlayContentP
     : easeOut((1 - tideRaw) * 2);
   const tideY = lerp(20, 0, easeOut(Math.min(tideRaw * 2, 1)));
 
-  // All final elements (Logo, Info, CTA) appear at the very end (98% - 100%)
-  const finalRaw = rangeProgress(progress, 0.98, 1.0);
+  // All final elements (Logo, Info, CTA) appear at the very end (90% - 98%)
+  // They will hit 100% opacity exactly when the video pauses at 98%
+  const finalRaw = rangeProgress(progress, 0.90, 0.98);
   const finalOpacity = easeOut(finalRaw);
   const finalY = lerp(30, 0, easeOut(finalRaw));
 
