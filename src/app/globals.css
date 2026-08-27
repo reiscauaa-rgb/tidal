@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Google Fonts ──────────────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap");
+
+/* ─── CSS Custom Properties ─────────────────────────────────────── */
+:root {
+  --sand-bg: #EAD8C0;
+  --sand-light: #F4E8D1;
+  --ocean-dark: #063E52;
+  --deep-brown: #4A2B29;
+  --turquoise: #13BBC4;
+  --coral: #FF8066;
+  --sunrise-gold: #FFB36B;
+
+  --font-display: "Bebas Neue", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  /* safe-area support */
+  --sat: env(safe-area-inset-top);
+  --sab: env(safe-area-inset-bottom);
+  --sal: env(safe-area-inset-left);
+  --sar: env(safe-area-inset-right);
+}
+
+/* ─── Base Resets ───────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--sand-bg);
+  color: var(--ocean-dark);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Typography ────────────────────────────────────────────────── */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+/* ─── Prevent iOS input zoom ────────────────────────────────────── */
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+
+/* ─── Focus visible for keyboard nav ───────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--ocean-dark);
+  outline-offset: 3px;
+}
+
+/* ─── Scrollbar styling ─────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--sand-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--ocean-dark);
+  border-radius: 3px;
+}
+
+/* ─── Reduced motion ────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Video fill utility ────────────────────────────────────────── */
+.video-cover {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* ─── Section spacing ───────────────────────────────────────────── */
+.section-padding {
+  padding: 5rem 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding: 7rem 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding: 9rem 4rem;
+  }
+}

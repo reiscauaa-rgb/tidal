@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120" fill="none">
+  <!-- TIDAL FEST SVG Logo Placeholder -->
+  <!-- Replace this file with the official tidal-logo.svg when available -->
+  
+  <!-- Background circle (sand texture feel) -->
+  <defs>
+    <linearGradient id="sandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F1DFC2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E8D0A8;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#063E52;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#13BBC4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2DD4E0;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#13BBC4;stop-opacity:0.4" />
+    </linearGradient>
+  </defs>
+
+  <!-- TIDAL text -->
+  <text
+    x="10"
+    y="82"
+    font-family="'Bebas Neue', 'Arial Black', sans-serif"
+    font-size="86"
+    font-weight="700"
+    letter-spacing="4"
+    fill="url(#textGrad)"
+  >TIDAL</text>
+  
+  <!-- FEST. text -->
+  <text
+    x="220"
+    y="110"
+    font-family="'Inter', 'Arial', sans-serif"
+    font-size="22"
+    font-weight="600"
+    letter-spacing="8"
+    fill="#063E52"
+    opacity="0.8"
+  >FEST.</text>
+
+  <!-- Wave decoration -->
+  <path
+    d="M8 100 C40 94 70 106 100 100 C130 94 160 106 190 100"
+    stroke="url(#waveGrad)"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    fill="none"
+    opacity="0.7"
+  />
+</svg>
