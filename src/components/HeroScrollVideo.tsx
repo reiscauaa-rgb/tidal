@@ -70,6 +70,29 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
       if (video.readyState >= 1) onMeta();
       if (video.readyState >= 3) setIsLoaded(true);
 
+      // --- iOS Safari Unlock ---
+      // iOS delays loading video metadata/frames until a play() is called.
+      // We attach a one-time listener to the first touch or scroll to trigger play() then pause().
+      const unlockVideo = () => {
+        if (video && video.paused && !isLoaded) {
+          const p = video.play();
+          if (p !== undefined) {
+            p.then(() => {
+              video.pause();
+              isReadyRef.current = true;
+              setIsLoaded(true);
+            }).catch(() => {});
+          }
+        }
+        window.removeEventListener("touchstart", unlockVideo);
+        window.removeEventListener("wheel", unlockVideo);
+        window.removeEventListener("click", unlockVideo);
+      };
+
+      window.addEventListener("touchstart", unlockVideo, { passive: true });
+      window.addEventListener("wheel", unlockVideo, { passive: true });
+      window.addEventListener("click", unlockVideo, { passive: true });
+
       const SMOOTHING = 0.1;
 
       const tick = () => {
