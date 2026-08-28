@@ -119,6 +119,11 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
         const v = videoRef.current;
         if (v && isReadyRef.current && v.duration > 0) {
           
+          // --- BUGFIX: Se o navegador tentar tocar o vídeo sozinho (rogue playback), nós forçamos o pause
+          if (directionRef.current === 0 && !v.paused) {
+            v.pause();
+          }
+
           if (lastTimeRef.current === 0) lastTimeRef.current = now;
           const dt = (now - lastTimeRef.current) / 1000;
           lastTimeRef.current = now;

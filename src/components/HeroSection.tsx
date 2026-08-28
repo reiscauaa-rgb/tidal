@@ -96,12 +96,12 @@ export default function HeroSection() {
     const onWheel = (e: WheelEvent) => {
       if (videoEnded) {
         if (window.scrollY <= 0 && e.deltaY < 0) {
-          e.preventDefault();
+          if (e.cancelable) e.preventDefault();
           handleBackwardInteraction();
         }
         return;
       }
-      e.preventDefault();
+      if (e.cancelable) e.preventDefault();
       if (e.deltaY > 0) {
         handleForwardInteraction();
       }
@@ -117,14 +117,14 @@ export default function HeroSection() {
       
       if (videoEnded) {
         if (window.scrollY <= 0 && delta < 0) {
-           e.preventDefault();
+           if (e.cancelable) e.preventDefault();
            handleBackwardInteraction();
         }
         lastTouchY.current = e.touches[0].clientY;
         return;
       }
 
-      e.preventDefault();
+      if (e.cancelable) e.preventDefault();
       lastTouchY.current = e.touches[0].clientY;
       if (delta > 0) handleForwardInteraction();
     };
@@ -138,18 +138,18 @@ export default function HeroSection() {
       
       if (videoEnded) {
         if (window.scrollY <= 0 && ["ArrowUp", "PageUp"].includes(e.key)) {
-          e.preventDefault();
+          if (e.cancelable) e.preventDefault();
           handleBackwardInteraction();
         }
         return;
       }
 
       if (["ArrowDown", " ", "PageDown"].includes(e.key)) {
-        e.preventDefault();
+        if (e.cancelable) e.preventDefault();
         handleForwardInteraction();
       }
       if (["ArrowUp", "PageUp"].includes(e.key)) {
-        e.preventDefault();
+        if (e.cancelable) e.preventDefault();
         // If we want to support rewinding before it ends
         videoRef.current?.playBackward();
       }
