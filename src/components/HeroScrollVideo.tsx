@@ -28,7 +28,6 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
     const rafRef = useRef<number | null>(null);
     const isReadyRef = useRef(false);
     const endFiredRef = useRef(false);
-    const [isLoaded, setIsLoaded] = useState(false);
     const [reducedMotion, setReducedMotion] = useState(false);
 
     // Expose play controls to parent
@@ -72,12 +71,9 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
           video.currentTime = 0.001; // Force render first frame
         }
       };
-      const onCanPlay = () => setIsLoaded(true);
 
       video.addEventListener("loadedmetadata", onMeta);
-      video.addEventListener("canplay", onCanPlay);
       if (video.readyState >= 1) onMeta();
-      if (video.readyState >= 3) setIsLoaded(true);
 
       // --- No explicit play() to force load needed, currentTime = 0.001 is enough ---
       const PLAYBACK_SPEED = 1.5;
@@ -124,7 +120,6 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
       return () => {
         if (rafRef.current) cancelAnimationFrame(rafRef.current);
         video.removeEventListener("loadedmetadata", onMeta);
-        video.removeEventListener("canplay", onCanPlay);
       };
     }, [reducedMotion, onProgressChange, onVideoEnd, onVideoRewound]);
 
@@ -140,41 +135,24 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
     }
 
     return (
-      <>
-        {/* Poster while loading */}
-        <div
-          className={`absolute inset-0 z-10 transition-opacity duration-700 ${
-            isLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
-          }`}
-          style={{
-            background: "#EAD8C0",
-            backgroundImage: "url('/images/tidal-hero-poster-mobile.webp')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-          aria-hidden="true"
+      <video
+        ref={videoRef}
+        className="absolute inset-0 w-full h-full object-cover z-10"
+        muted
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+        poster="/images/tidal-hero-poster-mobile.webp"
+      >
+        <source
+          src="/videos/tidal-hero-mobile.mp4"
+          type="video/mp4"
+          media="(max-width: 1023px)"
         />
-
-        {/* Full-screen video */}
-        <video
-          ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover z-10"
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-          poster="/images/tidal-hero-poster-mobile.webp"
-        >
-          <source
-            src="/videos/tidal-hero-mobile.mp4"
-            type="video/mp4"
-            media="(max-width: 1023px)"
-          />
-          <source src="/videos/tidal-hero-desktop.mp4" type="video/mp4" />
-          {/* Fallback: serve mobile for desktop if desktop version missing */}
-          <source src="/videos/tidal-hero-mobile.mp4" type="video/mp4" />
-        </video>
-      </>
+        <source src="/videos/tidal-hero-desktop.mp4" type="video/mp4" />
+        {/* Fallback: serve mobile for desktop if desktop version missing */}
+        <source src="/videos/tidal-hero-mobile.mp4" type="video/mp4" />
+      </video>
     );
   }
 );
