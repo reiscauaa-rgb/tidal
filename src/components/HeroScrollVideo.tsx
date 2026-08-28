@@ -75,7 +75,29 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
       video.addEventListener("loadedmetadata", onMeta);
       if (video.readyState >= 1) onMeta();
 
-      // --- No explicit play() to force load needed, currentTime = 0.001 is enough ---
+      // --- iOS Safari Unlock on First Interaction ---
+      // iOS requires an explicit .play() call triggered by a user gesture to load the video data.
+      // We do this on the first touch/wheel, then immediately pause it so our custom scrubber can take over.
+      const unlockVideo = () => {
+        if (video && video.paused) {
+          const p = video.play();
+          if (p !== undefined) {
+            p.then(() => {
+              video.pause();
+              isReadyRef.current = true;
+            }).catch(() => {});
+          }
+        }
+        window.removeEventListener("touchstart", unlockVideo);
+        window.removeEventListener("wheel", unlockVideo);
+        window.removeEventListener("click", unlockVideo);
+      };
+
+      window.addEventListener("touchstart", unlockVideo, { passive: true });
+      window.addEventListener("wheel", unlockVideo, { passive: true });
+      window.addEventListener("click", unlockVideo, { passive: true });
+
+      // --- No explicit auto-play() to force load needed, currentTime = 0.001 is enough ---
       const PLAYBACK_SPEED = 1.5;
 
       const tick = (now: number) => {
@@ -120,6 +142,9 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
       return () => {
         if (rafRef.current) cancelAnimationFrame(rafRef.current);
         video.removeEventListener("loadedmetadata", onMeta);
+        window.removeEventListener("touchstart", unlockVideo);
+        window.removeEventListener("wheel", unlockVideo);
+        window.removeEventListener("click", unlockVideo);
       };
     }, [reducedMotion, onProgressChange, onVideoEnd, onVideoRewound]);
 
