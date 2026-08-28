@@ -23,7 +23,27 @@ import ScrollOverlayContent from "./ScrollOverlayContent";
  * │  User can now scroll to the sections below                    │
  * └───────────────────────────────────────────────────────────────┘
  */
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
+
 export default function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(() => {
+    // Only pin when normal scrolling is restored
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top top", // When the top of Hero hits top of screen
+      pin: true,
+      pinSpacing: false, // Prevents adding extra space, allowing next section to roll over
+      markers: false,
+    });
+  }, { scope: sectionRef });
   const videoRef = useRef<HeroVideoHandle>(null);
   const [progress, setProgress] = useState(0);
   const [videoEnded, setVideoEnded] = useState(false);
@@ -41,6 +61,9 @@ export default function HeroSection() {
 
   const handleProgressChange = useCallback((p: number) => {
     setProgress(p);
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("heroProgress", { detail: p }));
+    }
   }, []);
 
   // ── Lock / unlock body scroll ────────────────────────────────────
@@ -152,8 +175,9 @@ export default function HeroSection() {
 
   return (
     <section
+      ref={sectionRef}
       className="relative w-full cursor-pointer"
-      style={{ height: "100vh" }}
+      style={{ height: "100vh", zIndex: 0 }}
       aria-label="Abertura TIDAL FEST — role ou clique para assistir"
     >
       <HeroScrollVideo
@@ -168,7 +192,6 @@ export default function HeroSection() {
         <ScrollOverlayContent progress={progress} />
       </div>
 
-      {/* Scroll hint — only at the very start */}
       <div
         className={`absolute bottom-10 left-0 right-0 z-40 flex flex-col items-center gap-2 pointer-events-none transition-opacity duration-700 ${
           progress < 0.04 ? "opacity-100" : "opacity-0"
@@ -176,14 +199,15 @@ export default function HeroSection() {
         aria-hidden="true"
       >
         <span
+          className="animate-pulse"
           style={{
             fontFamily: "Inter, sans-serif",
-            fontSize: "0.65rem",
+            fontSize: "0.9rem",
             fontWeight: 700,
             letterSpacing: "0.35em",
             textTransform: "uppercase",
-            color: "rgba(255,255,255,0.75)",
-            textShadow: "0 2px 8px rgba(0,0,0,0.6)",
+            color: "rgba(255,255,255,0.9)",
+            textShadow: "0 2px 4px rgba(0,0,0,0.8)",
           }}
         >
           Role para mergulhar

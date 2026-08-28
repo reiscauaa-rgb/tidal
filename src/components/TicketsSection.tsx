@@ -111,7 +111,7 @@ export default function TicketsSection() {
                             className="px-2 py-0.5 text-[10px] tracking-widest uppercase font-bold text-deep-brown border border-deep-brown/30"
                             style={{ fontFamily: "Inter, sans-serif" }}
                           >
-                            Esgotado
+                            Bloqueado
                           </span>
                         )}
                         {!isSoldOut && tier.badge && !isSelected && (
@@ -186,12 +186,27 @@ export default function TicketsSection() {
                     <span className="text-ocean-dark/70 font-medium">{quantity}x {selectedTier.name}</span>
                     <span className="text-ocean-dark font-semibold">{formatCurrency(subtotal)}</span>
                   </div>
+                  
+                  <div className="flex justify-between text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
+                    <span className="text-turquoise font-bold flex items-center gap-1">
+                      <CheckCircle2 size={12} aria-hidden="true" />
+                      Open Gin
+                    </span>
+                    <span className="text-turquoise font-semibold uppercase text-[10px] tracking-widest mt-0.5">Incluso</span>
+                  </div>
+                  
                   <div className="flex justify-between text-sm" style={{ fontFamily: "Inter, sans-serif" }}>
                     <span className="text-ocean-dark/70 font-medium flex items-center gap-1">
                       Taxa de serviço
                       <AlertCircle size={12} className="text-ocean-dark/40" aria-hidden="true" />
                     </span>
-                    <span className="text-ocean-dark font-semibold">{formatCurrency(selectedTier.fee * quantity)}</span>
+                    <span className="text-ocean-dark font-semibold">
+                      {selectedTier.fee === 0 ? (
+                        <span className="text-[#4A2B29] text-xs uppercase tracking-widest font-bold">Sem Taxa</span>
+                      ) : (
+                        formatCurrency(selectedTier.fee * quantity)
+                      )}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -208,9 +223,9 @@ export default function TicketsSection() {
 
                 <button
                   onClick={handleOpenModal}
-                  className="w-full py-4 flex items-center justify-center text-sm tracking-[0.2em] uppercase font-bold text-sand-light transition-all active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ocean-dark rounded-sm shadow-lg hover:shadow-xl"
+                  className="w-full py-4 flex items-center justify-center text-sm tracking-[0.2em] uppercase font-bold text-white transition-all active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white rounded-md shadow-lg hover:shadow-xl"
                   style={{
-                    background: "linear-gradient(135deg, #063E52 0%, #4A2B29 100%)",
+                    background: "linear-gradient(135deg, #717f46 0%, #30371c 100%)",
                     fontFamily: "Inter, sans-serif",
                     minHeight: "56px",
                   }}
@@ -315,9 +330,9 @@ export default function TicketsSection() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full mt-6 py-4 flex items-center justify-center gap-2 text-sm tracking-[0.2em] uppercase font-bold text-sand-light shadow-md hover:shadow-lg transition-all active:scale-95 rounded-sm"
+                  className="w-full mt-6 py-4 flex items-center justify-center gap-2 text-sm tracking-[0.2em] uppercase font-bold text-white shadow-md hover:shadow-lg transition-all active:scale-95 rounded-md"
                   style={{
-                    background: "#063E52",
+                    background: "linear-gradient(135deg, #717f46 0%, #30371c 100%)",
                     fontFamily: "Inter, sans-serif",
                   }}
                 >

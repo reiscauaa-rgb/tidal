@@ -68,6 +68,9 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
 
       const onMeta = () => {
         isReadyRef.current = true;
+        if (video && video.currentTime === 0) {
+          video.currentTime = 0.001; // Force render first frame
+        }
       };
       const onCanPlay = () => setIsLoaded(true);
 
@@ -75,6 +78,21 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
       video.addEventListener("canplay", onCanPlay);
       if (video.readyState >= 1) onMeta();
       if (video.readyState >= 3) setIsLoaded(true);
+
+      // --- Auto Unlock attempt ---
+      // Try playing the video immediately to force it to show the first frame
+      if (video && video.paused) {
+        const p = video.play();
+        if (p !== undefined) {
+          p.then(() => {
+            video.pause();
+            isReadyRef.current = true;
+            setIsLoaded(true);
+          }).catch(() => {
+            // If autoplay fails, we still rely on interaction unlock
+          });
+        }
+      }
 
       // --- iOS Safari Unlock ---
       const unlockVideo = () => {

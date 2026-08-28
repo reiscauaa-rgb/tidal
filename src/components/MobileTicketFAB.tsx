@@ -20,7 +20,7 @@ export default function MobileTicketFAB() {
 
   return (
     <div
-      className={`fixed bottom-6 right-4 z-40 lg:hidden transition-all duration-400 ${
+      className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-40 lg:hidden transition-all duration-400 ${
         visible
           ? "opacity-100 translate-y-0 pointer-events-auto"
           : "opacity-0 translate-y-6 pointer-events-none"
@@ -29,12 +29,12 @@ export default function MobileTicketFAB() {
     >
       <a
         href="#ingressos"
-        className="flex items-center gap-2.5 px-5 py-3.5 text-xs tracking-[0.2em] uppercase text-sand-light font-bold shadow-lg active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ocean-dark rounded-sm"
+        className="flex items-center gap-2.5 px-6 py-4 text-xs tracking-[0.2em] uppercase text-white font-bold shadow-lg active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white rounded-md"
         style={{
-          background: "linear-gradient(135deg, #063E52 0%, #4A2B29 100%)",
+          background: "linear-gradient(135deg, #717f46 0%, #30371c 100%)",
           minHeight: "48px",
           fontFamily: "Inter, sans-serif",
-          boxShadow: "0 4px 20px rgba(6,62,82,0.4)",
+          boxShadow: "0 4px 20px rgba(48, 55, 28, 0.4)",
         }}
         aria-label="Comprar ingresso para o TIDAL FEST"
       >

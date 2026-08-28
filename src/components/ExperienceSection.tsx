@@ -51,7 +51,7 @@ export default function ExperienceSection() {
     <section
       id="experiencia"
       className="relative section-padding overflow-hidden"
-      style={{ background: "#F4E8D1" }} // sand-light
+      style={{ background: "#F4E8D1", zIndex: 10 }} // sand-light
       aria-labelledby="experiencia-title"
     >
       <div className="relative max-w-6xl mx-auto z-10">

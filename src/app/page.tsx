@@ -25,20 +25,20 @@ export default function Home() {
       {/* 2. Manifesto */}
       <ManifestSection />
 
-      {/* 3. A Experiência — three pillars */}
-      <ExperienceSection />
+      {/* 3. Line-up */}
+      <LineupSection />
 
       {/* 4. Personagem Tidal */}
       <CharacterSection />
-
-      {/* 5. Line-up */}
-      <LineupSection />
 
       {/* 6. Informações do Evento */}
       <EventInfoSection />
 
       {/* 7. Ingressos */}
       <TicketsSection />
+
+      {/* A Experiência — three pillars */}
+      <ExperienceSection />
 
       {/* 8. Galeria */}
       <GallerySection />

@@ -85,7 +85,7 @@ export default function ScrollOverlayContent({ progress }: ScrollOverlayContentP
         aria-hidden={finalOpacity < 0.05}
       >
         <img
-          src="/images/tidal-logo.svg"
+          src="/images/logo.svg"
           alt="TIDAL FEST"
           style={{
             width: "100%",
@@ -194,8 +194,8 @@ export default function ScrollOverlayContent({ progress }: ScrollOverlayContentP
             letterSpacing: "0.3em",
             textTransform: "uppercase",
             fontWeight: 800,
-            color: "var(--ocean-dark)",
-            background: "linear-gradient(135deg, var(--sunrise-gold) 0%, var(--coral) 100%)",
+            color: "white",
+            background: "linear-gradient(135deg, #717f46 0%, #30371c 100%)",
             borderRadius: "6px",
             minHeight: "52px",
             textDecoration: "none",

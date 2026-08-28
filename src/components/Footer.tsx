@@ -35,9 +35,9 @@ export default function Footer() {
           {/* Brand column */}
           <div>
             <img
-              src="/images/tidal-logo.svg"
+              src="/images/logo.svg"
               alt="TIDAL FEST"
-              className="h-10 w-auto mb-4 drop-shadow-sm"
+              className="h-10 md:h-12 w-auto opacity-90"
               onError={(e) => {
                 const img = e.currentTarget;
                 img.style.display = "none";

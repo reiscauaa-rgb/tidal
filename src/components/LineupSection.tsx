@@ -34,7 +34,7 @@ export default function LineupSection() {
     <section
       id="lineup"
       className="relative section-padding overflow-hidden"
-      style={{ background: "#F4E8D1" }} // sand-light
+      style={{ background: "#F4E8D1", zIndex: 10 }} // sand-light
       aria-labelledby="lineup-title"
     >
       <div className="max-w-5xl mx-auto">
