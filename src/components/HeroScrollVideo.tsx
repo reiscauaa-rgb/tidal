@@ -28,6 +28,7 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
     const rafRef = useRef<number | null>(null);
     const isReadyRef = useRef(false);
     const endFiredRef = useRef(false);
+    const [isLoaded, setIsLoaded] = useState(false);
     const [reducedMotion, setReducedMotion] = useState(false);
 
     // Expose play controls to parent
@@ -71,20 +72,37 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
           video.currentTime = 0.001; // Force render first frame
         }
       };
+      const onCanPlay = () => setIsLoaded(true);
 
       video.addEventListener("loadedmetadata", onMeta);
+      video.addEventListener("canplay", onCanPlay);
       if (video.readyState >= 1) onMeta();
+      if (video.readyState >= 3) setIsLoaded(true);
 
-      // --- iOS Safari Unlock on First Interaction ---
-      // iOS requires an explicit .play() call triggered by a user gesture to load the video data.
-      // We do this on the first touch/wheel, then immediately pause it so our custom scrubber can take over.
+      // --- Auto Unlock attempt ---
+      // Try playing the video immediately to force it to show the first frame
+      if (video && video.paused) {
+        const p = video.play();
+        if (p !== undefined) {
+          p.then(() => {
+            video.pause();
+            isReadyRef.current = true;
+            setIsLoaded(true);
+          }).catch(() => {
+            // If autoplay fails, we still rely on interaction unlock
+          });
+        }
+      }
+
+      // --- iOS Safari Unlock ---
       const unlockVideo = () => {
-        if (video && video.paused) {
+        if (video && video.paused && !isLoaded) {
           const p = video.play();
           if (p !== undefined) {
             p.then(() => {
               video.pause();
               isReadyRef.current = true;
+              setIsLoaded(true);
             }).catch(() => {});
           }
         }
@@ -95,9 +113,6 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
 
       window.addEventListener("touchstart", unlockVideo, { passive: true });
       window.addEventListener("wheel", unlockVideo, { passive: true });
-      window.addEventListener("click", unlockVideo, { passive: true });
-
-      // --- No explicit auto-play() to force load needed, currentTime = 0.001 is enough ---
       const PLAYBACK_SPEED = 1.5;
 
       const tick = (now: number) => {
@@ -142,9 +157,7 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
       return () => {
         if (rafRef.current) cancelAnimationFrame(rafRef.current);
         video.removeEventListener("loadedmetadata", onMeta);
-        window.removeEventListener("touchstart", unlockVideo);
-        window.removeEventListener("wheel", unlockVideo);
-        window.removeEventListener("click", unlockVideo);
+        video.removeEventListener("canplay", onCanPlay);
       };
     }, [reducedMotion, onProgressChange, onVideoEnd, onVideoRewound]);
 
@@ -160,24 +173,41 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
     }
 
     return (
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover z-10"
-        muted
-        playsInline
-        preload="auto"
-        aria-hidden="true"
-        poster="/images/tidal-hero-poster-mobile.webp"
-      >
-        <source
-          src="/videos/tidal-hero-mobile.mp4"
-          type="video/mp4"
-          media="(max-width: 1023px)"
+      <>
+        {/* Poster while loading */}
+        <div
+          className={`absolute inset-0 z-10 transition-opacity duration-700 ${
+            isLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
+          }`}
+          style={{
+            background: "#EAD8C0",
+            backgroundImage: "url('/images/tidal-hero-poster-mobile.webp')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+          aria-hidden="true"
         />
-        <source src="/videos/tidal-hero-desktop.mp4" type="video/mp4" />
-        {/* Fallback: serve mobile for desktop if desktop version missing */}
-        <source src="/videos/tidal-hero-mobile.mp4" type="video/mp4" />
-      </video>
+
+        {/* Full-screen video */}
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover z-10"
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          poster="/images/tidal-hero-poster-mobile.webp"
+        >
+          <source
+            src="/videos/tidal-hero-mobile.mp4"
+            type="video/mp4"
+            media="(max-width: 1023px)"
+          />
+          <source src="/videos/tidal-hero-desktop.mp4" type="video/mp4" />
+          {/* Fallback: serve mobile for desktop if desktop version missing */}
+          <source src="/videos/tidal-hero-mobile.mp4" type="video/mp4" />
+        </video>
+      </>
     );
   }
 );

@@ -70,15 +70,11 @@ export default function HeroSection() {
   useEffect(() => {
     if (!videoEnded) {
       document.body.style.overflow = "hidden";
-      // Additional lock for iOS Safari
-      document.documentElement.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
     }
     return () => {
       document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
     };
   }, [videoEnded]);
 
@@ -100,16 +96,14 @@ export default function HeroSection() {
     const onWheel = (e: WheelEvent) => {
       if (videoEnded) {
         if (window.scrollY <= 0 && e.deltaY < 0) {
-          if (e.cancelable) e.preventDefault();
+          e.preventDefault();
           handleBackwardInteraction();
         }
         return;
       }
-      if (e.cancelable) e.preventDefault();
+      e.preventDefault();
       if (e.deltaY > 0) {
         handleForwardInteraction();
-      } else if (e.deltaY < 0) {
-        videoRef.current?.playBackward();
       }
     };
 
@@ -122,24 +116,17 @@ export default function HeroSection() {
       const delta = lastTouchY.current - e.touches[0].clientY;
       
       if (videoEnded) {
-        // Prevent default only if we are exactly at top and trying to pull down (scroll up)
-        // Check cancelable to avoid breaking iOS rubber banding
         if (window.scrollY <= 0 && delta < 0) {
-           if (e.cancelable) e.preventDefault();
+           e.preventDefault();
            handleBackwardInteraction();
         }
         lastTouchY.current = e.touches[0].clientY;
         return;
       }
 
-      if (e.cancelable) e.preventDefault();
+      e.preventDefault();
       lastTouchY.current = e.touches[0].clientY;
-      
-      if (delta > 0) {
-        handleForwardInteraction();
-      } else if (delta < 0) {
-        videoRef.current?.playBackward();
-      }
+      if (delta > 0) handleForwardInteraction();
     };
 
     const onTouchEnd = () => {
@@ -151,23 +138,23 @@ export default function HeroSection() {
       
       if (videoEnded) {
         if (window.scrollY <= 0 && ["ArrowUp", "PageUp"].includes(e.key)) {
-          if (e.cancelable) e.preventDefault();
+          e.preventDefault();
           handleBackwardInteraction();
         }
         return;
       }
 
       if (["ArrowDown", " ", "PageDown"].includes(e.key)) {
-        if (e.cancelable) e.preventDefault();
+        e.preventDefault();
         handleForwardInteraction();
       }
       if (["ArrowUp", "PageUp"].includes(e.key)) {
-        if (e.cancelable) e.preventDefault();
+        e.preventDefault();
+        // If we want to support rewinding before it ends
         videoRef.current?.playBackward();
       }
     };
 
-    // Use passive: false so we can preventDefault
     window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchmove", onTouchMove, { passive: false });
