@@ -1,6 +1,3 @@
-/* Google Fonts */
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,9 +11,6 @@
   --turquoise: #13BBC4;
   --coral: #FF8066;
   --sunrise-gold: #FFB36B;
-
-  --font-display: "Bebas Neue", sans-serif;
-  --font-body: "Inter", sans-serif;
 
   /* safe-area support */
   --sat: env(safe-area-inset-top);

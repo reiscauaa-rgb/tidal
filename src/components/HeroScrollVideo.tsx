@@ -79,40 +79,7 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
       if (video.readyState >= 1) onMeta();
       if (video.readyState >= 3) setIsLoaded(true);
 
-      // --- Auto Unlock attempt ---
-      // Try playing the video immediately to force it to show the first frame
-      if (video && video.paused) {
-        const p = video.play();
-        if (p !== undefined) {
-          p.then(() => {
-            video.pause();
-            isReadyRef.current = true;
-            setIsLoaded(true);
-          }).catch(() => {
-            // If autoplay fails, we still rely on interaction unlock
-          });
-        }
-      }
-
-      // --- iOS Safari Unlock ---
-      const unlockVideo = () => {
-        if (video && video.paused && !isLoaded) {
-          const p = video.play();
-          if (p !== undefined) {
-            p.then(() => {
-              video.pause();
-              isReadyRef.current = true;
-              setIsLoaded(true);
-            }).catch(() => {});
-          }
-        }
-        window.removeEventListener("touchstart", unlockVideo);
-        window.removeEventListener("wheel", unlockVideo);
-        window.removeEventListener("click", unlockVideo);
-      };
-
-      window.addEventListener("touchstart", unlockVideo, { passive: true });
-      window.addEventListener("wheel", unlockVideo, { passive: true });
+      // --- No explicit play() to force load needed, currentTime = 0.001 is enough ---
       const PLAYBACK_SPEED = 1.5;
 
       const tick = (now: number) => {
