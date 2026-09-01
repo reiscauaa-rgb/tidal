@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import HeroScrollVideo, { type HeroVideoHandle } from "./HeroScrollVideo";
 import ScrollOverlayContent from "./ScrollOverlayContent";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 /**
  * HeroSection — Scroll-intercept approach
@@ -23,9 +26,6 @@ import ScrollOverlayContent from "./ScrollOverlayContent";
  * │  User can now scroll to the sections below                    │
  * └───────────────────────────────────────────────────────────────┘
  */
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -38,24 +38,29 @@ export default function HeroSection() {
     // Only pin when normal scrolling is restored
     ScrollTrigger.create({
       trigger: sectionRef.current,
-      start: "top top", // When the top of Hero hits top of screen
+      start: "top top",
       pin: true,
-      pinSpacing: false, // Prevents adding extra space, allowing next section to roll over
+      pinSpacing: false,
       markers: false,
     });
   }, { scope: sectionRef });
+
+
   const videoRef = useRef<HeroVideoHandle>(null);
   const [progress, setProgress] = useState(0);
   const [videoEnded, setVideoEnded] = useState(false);
   const lastTouchY = useRef<number | null>(null);
 
+  // Keep videoEnded accessible inside event listeners without re-binding them
+  const videoEndedRef = useRef(false);
+
   const handleVideoEnd = useCallback(() => {
+    videoEndedRef.current = true;
     setVideoEnded(true);
   }, []);
 
   const handleVideoRewound = useCallback(() => {
-    // Fired when the video fully rewinds back to 0
-    // We can ensure the videoEnded is false here
+    videoEndedRef.current = false;
     setVideoEnded(false);
   }, []);
 
@@ -70,40 +75,53 @@ export default function HeroSection() {
   useEffect(() => {
     if (!videoEnded) {
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      // Ensure scroll position is at 0 when unlocking
+      // so user doesn't land halfway down the page
+      window.scrollTo(0, 0);
     }
     return () => {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     };
   }, [videoEnded]);
 
   // ── Interaction Interception ───────────────────────────────────────────
+  // IMPORTANT: Register listeners ONCE only, use videoEndedRef to read current state
+  // This prevents the re-registration race condition that causes the scroll freeze.
   useEffect(() => {
     const handleForwardInteraction = () => {
-      if (!videoEnded) {
+      if (!videoEndedRef.current) {
         videoRef.current?.playForward();
       }
     };
 
     const handleBackwardInteraction = () => {
-      if (videoEnded && window.scrollY <= 0) {
+      if (videoEndedRef.current && window.scrollY <= 0) {
+        videoEndedRef.current = false;
         setVideoEnded(false);
         videoRef.current?.playBackward();
       }
     };
 
     const onWheel = (e: WheelEvent) => {
-      if (videoEnded) {
+      if (videoEndedRef.current) {
+        // Scroll is free — only intercept if user tries to scroll UP past the top
         if (window.scrollY <= 0 && e.deltaY < 0) {
           if (e.cancelable) e.preventDefault();
           handleBackwardInteraction();
         }
         return;
       }
+      // Video not ended: consume scroll to drive video
       if (e.cancelable) e.preventDefault();
       if (e.deltaY > 0) {
         handleForwardInteraction();
+      } else if (e.deltaY < 0) {
+        videoRef.current?.playBackward();
       }
     };
 
@@ -114,11 +132,11 @@ export default function HeroSection() {
     const onTouchMove = (e: TouchEvent) => {
       if (lastTouchY.current === null) return;
       const delta = lastTouchY.current - e.touches[0].clientY;
-      
-      if (videoEnded) {
+
+      if (videoEndedRef.current) {
         if (window.scrollY <= 0 && delta < 0) {
-           if (e.cancelable) e.preventDefault();
-           handleBackwardInteraction();
+          if (e.cancelable) e.preventDefault();
+          handleBackwardInteraction();
         }
         lastTouchY.current = e.touches[0].clientY;
         return;
@@ -126,7 +144,8 @@ export default function HeroSection() {
 
       if (e.cancelable) e.preventDefault();
       lastTouchY.current = e.touches[0].clientY;
-      if (delta > 0) handleForwardInteraction();
+      if (delta > 5) handleForwardInteraction();
+      else if (delta < -5) videoRef.current?.playBackward();
     };
 
     const onTouchEnd = () => {
@@ -135,8 +154,8 @@ export default function HeroSection() {
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (["INPUT", "TEXTAREA"].includes((e.target as HTMLElement).tagName)) return;
-      
-      if (videoEnded) {
+
+      if (videoEndedRef.current) {
         if (window.scrollY <= 0 && ["ArrowUp", "PageUp"].includes(e.key)) {
           if (e.cancelable) e.preventDefault();
           handleBackwardInteraction();
@@ -150,7 +169,6 @@ export default function HeroSection() {
       }
       if (["ArrowUp", "PageUp"].includes(e.key)) {
         if (e.cancelable) e.preventDefault();
-        // If we want to support rewinding before it ends
         videoRef.current?.playBackward();
       }
     };
@@ -160,7 +178,6 @@ export default function HeroSection() {
     window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
     window.addEventListener("keydown", onKeyDown);
-    // Also trigger forward play on click if not ended
     window.addEventListener("click", handleForwardInteraction);
 
     return () => {
@@ -171,7 +188,8 @@ export default function HeroSection() {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("click", handleForwardInteraction);
     };
-  }, [videoEnded]);
+    // Empty deps: register ONCE. State is read via videoEndedRef (ref, not state).
+  }, []);
 
   return (
     <section

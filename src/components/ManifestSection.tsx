@@ -1,125 +1,132 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 export default function ManifestSection() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const wordsRef = useRef<(HTMLSpanElement | null)[]>([]);
+  const containerRef = useRef<HTMLElement>(null);
+  const elementsRef = useRef<(HTMLElement | null)[]>([]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            wordsRef.current.forEach((word, i) => {
-              if (word) {
-                setTimeout(() => {
-                  word.style.opacity = "1";
-                  word.style.transform = "translateY(0)";
-                }, i * 150);
-              }
-            });
-            observer.disconnect();
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
+  // Function to collect refs for staggering
+  const addToRefs = (el: HTMLElement | null) => {
+    if (el && !elementsRef.current.includes(el)) {
+      elementsRef.current.push(el);
     }
-    return () => observer.disconnect();
-  }, []);
+  };
+
+  useGSAP(() => {
+    if (!containerRef.current || elementsRef.current.length === 0) return;
+
+    // Wave animation: staggering upward motion with a smooth elastic/out ease
+    gsap.fromTo(
+      elementsRef.current,
+      { opacity: 0, y: 80 },
+      {
+        opacity: 1, 
+        y: 0,
+        duration: 1.2,
+        stagger: 0.15, // Elements appear one after another
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 60%",
+          toggleActions: "play none none reverse"
+        }
+      }
+    );
+  }, { scope: containerRef });
 
   return (
     <section
       id="manifesto"
-      className="relative section-padding overflow-hidden"
-      style={{ 
-        backgroundImage: "url('/images/manifest-bg.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        backgroundColor: "#EAD8C0",
-        zIndex: 10
-      }}
+      ref={containerRef}
+      className="relative w-full overflow-hidden"
+      style={{ minHeight: "100vh", backgroundColor: "#EAD8C0" }}
       aria-labelledby="manifesto-title"
     >
-      <div className="max-w-4xl mx-auto" ref={containerRef}>
-        <h2 id="manifesto-title" className="sr-only">
-          Manifesto: A Maré Virou
-        </h2>
-        
-        {/* Animated Headline */}
-        <div 
-          className="text-center mb-12 md:mb-20 flex flex-col items-center"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(5rem, 16vw, 10rem)", lineHeight: 1.1 }}
-          aria-hidden="true"
+      {/* Background Image */}
+      <img 
+        src="/images/manifest-board.png" 
+        alt="Personagem na praia segurando um quadro branco"
+        className="absolute inset-0 w-full h-full object-cover object-bottom"
+        style={{ zIndex: 0 }}
+      />
+
+      {/* Gradient transition to the next section (#F4E8D1) */}
+      <div 
+        className="absolute bottom-0 left-0 w-full pointer-events-none"
+        style={{ 
+          height: "20vh", 
+          zIndex: 5,
+          background: "linear-gradient(to bottom, transparent, #F4E8D1)" 
+        }}
+      />
+
+      {/* Top Text: "A MARÉ VIROU" */}
+      <div 
+        className="absolute top-[2vh] sm:top-[4vh] left-0 w-full z-10 flex flex-col items-center text-center px-4"
+        style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(4.5rem, 14vw, 10rem)", lineHeight: 1.1 }}
+      >
+        <span
+          ref={addToRefs}
+          className="block pb-2"
+          style={{ 
+            background: "linear-gradient(to bottom right, #F4E8D1 0%, #13BBC4 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            filter: "drop-shadow(0px 6px 12px rgba(0,0,0,0.6))"
+          }}
         >
-          <span
-            ref={(el) => { wordsRef.current[0] = el; }}
-            className="block pb-2"
+          A MARÉ
+        </span>
+        <span
+          ref={addToRefs}
+          className="block text-transparent -mt-4 md:-mt-8"
+          style={{ 
+            WebkitTextStroke: "2px #ffffff",
+            filter: "drop-shadow(0px 6px 12px rgba(0,0,0,0.6))"
+          }}
+        >
+          VIROU.
+        </span>
+      </div>
+
+      {/* Bottom Text: Inside the whiteboard */}
+      <div 
+        className="absolute bottom-0 left-0 w-full z-10 flex flex-col items-center justify-center text-center px-6"
+        style={{ height: "45vh", paddingBottom: "5vh" }}
+      >
+        <div className="max-w-xl mx-auto flex flex-col items-center gap-4">
+          <h2 
+            ref={addToRefs}
+            id="manifesto-title" 
             style={{ 
-              background: "linear-gradient(to bottom right, #F4E8D1 0%, #13BBC4 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              filter: "drop-shadow(0px 4px 8px rgba(0,0,0,0.3))",
-              opacity: 0, 
-              transform: "translateY(40px)",
-              transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)" 
+              fontFamily: "Bebas Neue, sans-serif", 
+              fontSize: "clamp(2.5rem, 6vw, 4rem)", 
+              color: "#063E52", 
+              lineHeight: 1 
             }}
           >
-            A MARÉ
-          </span>
-          <span
-            ref={(el) => { wordsRef.current[1] = el; }}
-            className="block text-transparent -mt-6 md:-mt-12"
-            style={{ 
-              WebkitTextStroke: "2px #ffffff",
-              opacity: 0,
-              transform: "translateY(40px)",
-              transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)" 
-            }}
-          >
-            VIROU.
-          </span>
-        </div>
-
-        {/* Decorative Wave */}
-        <div className="flex justify-center mb-12 md:mb-16">
-          <svg width="64" height="24" viewBox="0 0 64 24" fill="none" aria-hidden="true">
-            <path d="M0 12C10.6667 4 21.3333 20 32 12C42.6667 4 53.3333 20 64 12" stroke="#13BBC4" strokeWidth="2" strokeLinecap="round"/>
-          </svg>
-        </div>
-
-        {/* Editorial Text */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 px-4 md:px-0">
+            Uma nova experiência <br/> à beira-mar
+          </h2>
+          
           <p 
-            className="text-white text-xl md:text-2xl leading-relaxed font-medium"
-            style={{ fontFamily: "Inter, sans-serif", textShadow: "0px 4px 12px rgba(0,0,0,0.8), 0px 2px 4px rgba(0,0,0,0.8)" }}
+            ref={addToRefs}
+            style={{ 
+              fontFamily: "Inter, sans-serif", 
+              color: "#333333", 
+              fontSize: "clamp(1rem, 2vw, 1.25rem)" 
+            }}
+            className="font-medium leading-relaxed max-w-md px-2"
           >
-            Esqueça tudo que você sabe sobre festivais comuns. TIDAL FEST é uma imersão sensorial completa onde a energia do oceano dita o ritmo.
+            Música, luzes e energia da praia se encontram em uma noite feita para sentir, dançar e viver até o amanhecer.
           </p>
-          <div className="flex flex-col gap-6">
-            <p 
-              className="text-white/95 text-lg md:text-xl leading-relaxed"
-              style={{ fontFamily: "Inter, sans-serif", textShadow: "0px 4px 12px rgba(0,0,0,0.8), 0px 2px 4px rgba(0,0,0,0.8)" }}
-            >
-              Uma experiência que une cenografia imponente, sonoridade impecável e a atmosfera indescritível de estar na beira da praia ao amanhecer.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              {['MÚSICA ELETRÔNICA', 'ARTE', 'NATUREZA'].map((tag) => (
-                <span 
-                  key={tag}
-                  className="px-4 py-1.5 text-sm tracking-widest text-white border border-white/40 rounded-full font-bold backdrop-blur-sm"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </section>

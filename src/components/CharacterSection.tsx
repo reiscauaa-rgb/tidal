@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -9,151 +9,226 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
-export default function CharacterSection() {
-  const contentRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLElement>(null);
-  const pathRef = useRef<SVGPathElement>(null);
-  const [imgError, setImgError] = useState(false);
+const images = [
+  { src: "/images/tidal-insp-1.jpg", alt: "Sunset Vibes" },
+  { src: "/images/tidal-insp-2.jpg", alt: "Red Room" },
+  { src: "/images/tidal-insp-3.jpg", alt: "Tidal Fest" },
+];
 
-  // SVG wave paths
-  const start = "M 0 100 V 50 Q 50 0 100 50 V 100 z";
-  const end = "M 0 100 V 0 Q 50 0 100 0 V 100 z";
+const marqueeImages = [...images, ...images, ...images];
+const SPEED = 48;
+
+export default function CharacterSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const pathRef = useRef<SVGPathElement>(null);
+  const stripRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | null>(null);
+  const offsetRef = useRef(0);
+  const lastTsRef = useRef(0);
+  const isDragging = useRef(false);
+  const lastPointerX = useRef(0);
+
+  const waveStart = "M 0 100 V 50 Q 50 0 100 50 V 100 z";
+  const waveEnd = "M 0 100 V 0 Q 50 0 100 0 V 100 z";
 
   useGSAP(() => {
-    if (!pathRef.current || !containerRef.current) return;
+    if (!sectionRef.current || !pathRef.current) return;
 
-    // The wave rises up from the bottom as you scroll down the section
-    let tl = gsap.timeline({
+    gsap.timeline({
       scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top bottom", // starts animating when the top of the section enters the bottom of the viewport
-        end: "center center", // finishes when the section is centered
+        trigger: sectionRef.current,
+        start: "top bottom",
+        end: "center center",
         scrub: 1,
-      }
-    });
+      },
+    })
+      .to(pathRef.current, { attr: { d: waveStart }, ease: "power2.in" })
+      .to(pathRef.current, { attr: { d: waveEnd }, ease: "power2.out" });
 
-    tl.to(pathRef.current, { attr: { d: start }, ease: "power2.in" })
-      .to(pathRef.current, { attr: { d: end }, ease: "power2.out" });
-  }, { scope: containerRef });
+    if (contentRef.current) {
+      gsap.fromTo(
+        contentRef.current,
+        { opacity: 0, y: 36 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 70%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }
+  }, { scope: sectionRef });
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && contentRef.current) {
-          contentRef.current.style.opacity = "1";
-          contentRef.current.style.transform = "translateY(0)";
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.2 }
-    );
-    if (contentRef.current) observer.observe(contentRef.current);
-    return () => observer.disconnect();
+    const strip = stripRef.current;
+    if (!strip) return;
+
+    const loopWidth = strip.scrollWidth / 3;
+    offsetRef.current = -loopWidth;
+    lastTsRef.current = performance.now();
+
+    const tick = (ts: number) => {
+      const dt = ts - lastTsRef.current;
+      lastTsRef.current = ts;
+
+      if (!isDragging.current) {
+        offsetRef.current += SPEED * (dt / 1000);
+        if (offsetRef.current >= 0) offsetRef.current -= loopWidth;
+      }
+
+      strip.style.transform = `translateX(${offsetRef.current}px)`;
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+
+    const onPointerDown = (e: PointerEvent) => {
+      isDragging.current = true;
+      lastPointerX.current = e.clientX;
+      strip.setPointerCapture(e.pointerId);
+      strip.style.cursor = "grabbing";
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (!isDragging.current) return;
+      const delta = e.clientX - lastPointerX.current;
+      lastPointerX.current = e.clientX;
+      offsetRef.current += delta;
+      if (offsetRef.current >= 0) offsetRef.current -= loopWidth;
+      if (offsetRef.current < -loopWidth * 2) offsetRef.current += loopWidth;
+    };
+
+    const onPointerUp = () => {
+      isDragging.current = false;
+      strip.style.cursor = "grab";
+    };
+
+    strip.addEventListener("pointerdown", onPointerDown);
+    strip.addEventListener("pointermove", onPointerMove);
+    strip.addEventListener("pointerup", onPointerUp);
+    strip.addEventListener("pointercancel", onPointerUp);
+    strip.style.cursor = "grab";
+    strip.style.userSelect = "none";
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      strip.removeEventListener("pointerdown", onPointerDown);
+      strip.removeEventListener("pointermove", onPointerMove);
+      strip.removeEventListener("pointerup", onPointerUp);
+      strip.removeEventListener("pointercancel", onPointerUp);
+    };
   }, []);
 
   return (
     <section
-      ref={containerRef}
-      id="personagem"
+      ref={sectionRef}
+      id="inspiracoes"
       className="relative section-padding overflow-hidden"
-      style={{ background: "#F4E8D1" }} // Matches previous section (Lineup) so the wave comes over it
-      aria-label="Identidade visual Tidal"
+      style={{ background: "#F4E8D1" }}
+      aria-label="Nossas Inspiracoes"
     >
-      {/* Absolute SVG Wave Background */}
-      <svg 
-        className="absolute bottom-0 left-0 w-full h-full pointer-events-none" 
-        viewBox="0 0 100 100" 
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        viewBox="0 0 100 100"
         preserveAspectRatio="none"
         style={{ zIndex: 0 }}
       >
         <defs>
           <linearGradient id="blue-wave-grad" x1="0" y1="0" x2="0" y2="100" gradientUnits="userSpaceOnUse">
-             <stop offset="0%" stopColor="#13BBC4" /> {/* Turquoise */}
-             <stop offset="100%" stopColor="#063E52" /> {/* Ocean Dark */}
+            <stop offset="0%" stopColor="#13BBC4" />
+            <stop offset="100%" stopColor="#063E52" />
           </linearGradient>
         </defs>
-        <path 
+        <path
           ref={pathRef}
-          fill="url(#blue-wave-grad)" 
-          d="M 0 100 V 100 Q 50 100 100 100 V 100 z" 
+          fill="url(#blue-wave-grad)"
+          d="M 0 100 V 100 Q 50 100 100 100 V 100 z"
         />
       </svg>
 
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-24 relative z-10">
-        
-        {/* Imagem do personagem cromado */}
-        <div className="w-full md:w-1/2 relative flex justify-center">
-          {/* Ambient glow around character */}
-          <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 rounded-full pointer-events-none"
+      <div ref={contentRef} className="relative z-10 text-center mb-60 md:mb-64 opacity-0 px-4">
+        <p
+          className="text-white/70 text-xs tracking-[0.45em] uppercase mb-5 font-bold"
+          style={{ fontFamily: "Inter, sans-serif" }}
+        >
+          NOSSAS INSPIRAÇÕES
+        </p>
+        <h2
+          style={{
+            fontFamily: "Bebas Neue, sans-serif",
+            fontSize: "clamp(3.5rem, 9vw, 7rem)",
+            letterSpacing: "0.02em",
+            color: "#ffffff",
+            lineHeight: 0.9,
+            marginBottom: "1.5rem",
+          }}
+        >
+          {"A ENERGIA "}
+          <span style={{ color: "transparent", WebkitTextStroke: "2px rgba(255,255,255,0.8)" }}>
+            DO AGORA.
+          </span>
+        </h2>
+        <p
+          className="text-white/80 text-base leading-relaxed max-w-lg mx-auto"
+          style={{ fontFamily: "Inter, sans-serif" }}
+        >
+          A Tidal Fest nasceu da vontade de unir a imensidão da natureza com a energia
+          indomável da música eletrônica. Do palco às luzes neon, cada detalhe reflete
+          o pôr do sol e as marés.
+        </p>
+      </div>
+
+      <div className="relative z-10">
+        <div
+          className="absolute left-1/2 -translate-x-1/2 z-20 pointer-events-none overflow-hidden"
+          style={{ bottom: "100%", marginBottom: "1px" }}
+        >
+          <img
+            src="/images/tidal-character-pointing.png"
+            alt="Personagem cromado apontando para o carrosel"
             style={{
-              background: "radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%)",
-              filter: "blur(40px)",
+              width: "clamp(433px, 75vw, 800px)",
+              maxWidth: "none",
+              objectFit: "contain",
+              objectPosition: "bottom",
+              display: "block",
+              marginBottom: "-25%", // This pulls the legs down out of the container, effectively cropping them!
             }}
-            aria-hidden="true"
           />
-          
-          {!imgError ? (
-            <img
-              src="/images/tidal-character-new-2.jpg"
-              alt="Personagem cromado refletindo a luz do sol e o oceano"
-              className="relative z-10 w-full max-w-md object-contain drop-shadow-2xl hover:scale-[1.02] transition-transform duration-700 rounded-xl mix-blend-luminosity opacity-90"
-              onError={() => setImgError(true)}
-            />
-          ) : (
-            <div 
-              className="relative z-10 w-full max-w-md aspect-[3/4] flex flex-col items-center justify-center border border-white/20 bg-white/10 backdrop-blur-sm rounded-xl"
-              aria-label="Imagem do personagem não disponível no momento"
-            >
-              <svg width="120" height="120" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-                <path d="M60 10 L110 35 L110 85 L60 110 L10 85 L10 35 Z" stroke="#ffffff" strokeOpacity="0.5" strokeWidth="2" fill="none" strokeDasharray="4 4" />
-                <circle cx="60" cy="45" r="15" stroke="#ffffff" strokeOpacity="0.5" strokeWidth="2" fill="none" />
-                <path d="M35 100 C35 75 85 75 85 100" stroke="#ffffff" strokeOpacity="0.5" strokeWidth="2" fill="none" />
-              </svg>
-            </div>
-          )}
         </div>
 
-        {/* Text Content */}
-        <div 
-          ref={contentRef}
-          className="w-full md:w-1/2 flex flex-col items-start"
-          style={{ opacity: 0, transform: "translateY(30px)", transition: "all 1s cubic-bezier(0.16, 1, 0.3, 1)" }}
-        >
-          <p
-            className="text-white/80 text-xs tracking-[0.4em] uppercase mb-4 font-bold"
-            style={{ fontFamily: "Inter, sans-serif" }}
-          >
-            A ESSÊNCIA CROMADA
-          </p>
+        <div className="relative overflow-hidden">
 
-          <h2
-            className="mb-8"
-            style={{
-              fontFamily: "Bebas Neue, sans-serif",
-              fontSize: "clamp(3rem, 7vw, 5rem)",
-              letterSpacing: "0.02em",
-              color: "#ffffff",
-              lineHeight: 0.9,
-            }}
+          <div
+            ref={stripRef}
+            className="flex gap-[2px] will-change-transform"
+            style={{ width: "max-content" }}
           >
-            NÓS REFLETIMOS A <br />
-            <span style={{ color: "transparent", WebkitTextStroke: "1px rgba(255,255,255,0.7)" }}>ENERGIA DO AGORA.</span>
-          </h2>
-
-          <p
-            className="text-white/90 text-base md:text-lg leading-relaxed mb-8 max-w-lg"
-            style={{ fontFamily: "Inter, sans-serif" }}
-          >
-            Nossa identidade cromada não é por acaso. Ela absorve as cores do pôr do sol, reflete a imensidão do oceano e pulsa no ritmo das batidas que nos movem.
-          </p>
-
-          <blockquote
-            className="pl-6 border-l-2 border-turquoise text-white italic font-light text-xl"
-            style={{ fontFamily: "Inter, sans-serif" }}
-          >
-            "Onde a tecnologia fluida encontra a força bruta da natureza."
-          </blockquote>
+            {marqueeImages.map((img, i) => (
+              <div
+                key={i}
+                className="flex-shrink-0 overflow-hidden"
+                style={{
+                  width: "clamp(260px, 72vw, 320px)",
+                  height: "clamp(340px, 94vw, 420px)",
+                }}
+              >
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  className="w-full h-full object-cover"
+                  draggable={false}
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
