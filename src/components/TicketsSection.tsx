@@ -1,29 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import Script from "next/script";
 
 export default function TicketsSection() {
-  const widgetContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!widgetContainerRef.current) return;
-
-    // Limpa o container para evitar duplicação no Strict Mode do React
-    widgetContainerRef.current.innerHTML = "";
-
-    // Cria a div que o Sympla exige
-    const symplaDiv = document.createElement("div");
-    symplaDiv.id = "sympla-widget-3526727";
-    symplaDiv.setAttribute("height", "auto");
-    widgetContainerRef.current.appendChild(symplaDiv);
-
-    // Adiciona o script oficial do Sympla logo em seguida
-    const script = document.createElement("script");
-    script.src = "https://www.sympla.com.br/api/v1/event-widget/html-loader.js";
-    script.async = true;
-    widgetContainerRef.current.appendChild(script);
-  }, []);
-
   return (
     <section
       id="ingressos"
@@ -43,16 +22,20 @@ export default function TicketsSection() {
         </div>
 
         <div
-          className="w-full p-2 sm:p-6 md:p-10 border border-ocean-dark/10 shadow-xl rounded-md flex justify-center overflow-hidden"
+          className="w-full p-2 sm:p-6 md:p-10 border border-ocean-dark/10 shadow-xl rounded-md flex justify-center overflow-hidden relative"
           style={{ background: "rgba(255, 255, 255, 0.6)", backdropFilter: "blur(20px)", minHeight: "500px" }}
         >
-          {/* Sympla Widget Container */}
+          {/* Container exigido pelo Sympla */}
           <div 
-            ref={widgetContainerRef} 
-            className="w-full h-auto overflow-hidden"
-          >
-            {/* Injetado via React useEffect */}
-          </div>
+            id="sympla-widget-3526727" 
+            className="w-full h-auto overflow-hidden min-h-[400px]"
+          ></div>
+          
+          {/* Carregamento oficial do script via Next.js */}
+          <Script 
+            src="https://www.sympla.com.br/api/v1/event-widget/html-loader.js" 
+            strategy="lazyOnload"
+          />
         </div>
       </div>
     </section>
