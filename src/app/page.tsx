@@ -5,6 +5,7 @@ import ManifestSection from "@/components/ManifestSection";
 import CharacterSection from "@/components/CharacterSection";
 import LineupSection from "@/components/LineupSection";
 import TicketsPanelEffect from "@/components/TicketsPanelEffect";
+import TicketsHeaderSection from "@/components/TicketsHeaderSection";
 import TicketsSection from "@/components/TicketsSection";
 import FAQSection from "@/components/FAQSection";
 import FinalCTA from "@/components/FinalCTA";
@@ -32,7 +33,10 @@ export default function Home() {
       {/* 5. Quando e Onde — pina e escala para revelar Ingressos */}
       <TicketsPanelEffect />
 
-      {/* 6. Ingressos */}
+      {/* 6. Cabeçalho Ingressos (Vídeo) */}
+      <TicketsHeaderSection />
+
+      {/* 7. Ingressos */}
       <TicketsSection />
 
       {/* 7. FAQ */}

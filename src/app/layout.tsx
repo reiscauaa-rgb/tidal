@@ -73,6 +73,24 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // ALTERE AQUI: Mude para 'false' quando quiser exibir o site normalmente.
+  const MAINTENANCE_MODE = true;
+
+  if (MAINTENANCE_MODE) {
+    return (
+      <html lang="pt-BR" className={`${bebasNeue.variable} ${inter.variable}`}>
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        </head>
+        <body className="bg-black text-white h-screen w-screen overflow-hidden flex items-center justify-center antialiased">
+          <h1 className="text-3xl md:text-5xl font-display uppercase tracking-widest text-center px-4">
+            Site em desenvolvimento
+          </h1>
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html lang="pt-BR" className={`${bebasNeue.variable} ${inter.variable}`}>
       <head>

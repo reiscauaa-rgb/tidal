@@ -35,41 +35,27 @@ export default function TicketsSection() {
     <>
       <section
         id="ingressos"
-        className="relative section-padding"
+        className="relative pb-16 md:pb-24 pt-8"
         style={{ background: "#F4E8D1" }} // sand-light
         aria-labelledby="tickets-title"
       >
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12 md:mb-16">
-            <p
-              className="text-turquoise text-xs tracking-[0.4em] uppercase mb-4 font-bold"
-              style={{ fontFamily: "Inter, sans-serif" }}
-            >
-              ACESSO
-            </p>
-            <h2
-              id="tickets-title"
-              style={{
-                fontFamily: "Bebas Neue, sans-serif",
-                fontSize: "clamp(3.5rem, 8vw, 6rem)",
-                letterSpacing: "0.02em",
-                color: "#063E52",
-                lineHeight: 0.9,
-              }}
-            >
-              GARANTA SEU <br />
-              <span style={{ color: "transparent", WebkitTextStroke: "2px #4A2B29" }}>
-                LUGAR.
-              </span>
-            </h2>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col items-center">
+          {/* Personagem com o ingresso */}
+          <div className="w-full flex justify-center">
+            <img 
+              src="/images/ticket-character.png" 
+              alt="Personagem Tidal segurando ingresso" 
+              className="w-auto h-[240px] sm:h-[320px] md:h-[420px] object-contain object-bottom"
+              style={{ display: "block" }}
+            />
           </div>
 
           <div
-            className="flex flex-col lg:flex-row gap-8 lg:gap-12 p-6 md:p-10 border border-ocean-dark/10 shadow-xl"
+            className="w-full flex flex-col lg:flex-row gap-6 lg:gap-12 p-5 sm:p-6 md:p-10 border border-ocean-dark/10 shadow-xl rounded-md"
             style={{ background: "rgba(255, 255, 255, 0.6)", backdropFilter: "blur(20px)" }}
           >
             {/* Lotes (Tiers) */}
-            <div className="flex-1 flex flex-col gap-4" role="radiogroup" aria-label="Lotes de ingressos">
+            <div className="flex-1 flex flex-col gap-3 md:gap-4" role="radiogroup" aria-label="Lotes de ingressos">
               {tickets.map((tier) => {
                 const isSelected = selectedTierId === tier.id;
                 const isSoldOut = !tier.available;
@@ -81,7 +67,7 @@ export default function TicketsSection() {
                     aria-checked={isSelected}
                     disabled={isSoldOut}
                     onClick={() => setSelectedTierId(tier.id)}
-                    className={`relative w-full flex items-center justify-between p-5 md:p-6 transition-all duration-300 border text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-ocean-dark rounded-sm ${
+                    className={`relative w-full flex items-center justify-between p-4 sm:p-5 md:p-6 transition-all duration-300 border text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-ocean-dark rounded-sm ${
                       isSoldOut
                         ? "opacity-50 cursor-not-allowed border-ocean-dark/5 bg-ocean-dark/5"
                         : isSelected
@@ -89,10 +75,10 @@ export default function TicketsSection() {
                         : "border-ocean-dark/10 hover:border-ocean-dark/30 hover:bg-white/50"
                     }`}
                   >
-                    <div>
-                      <div className="flex items-center gap-3 mb-1">
+                    <div className="flex-1 pr-2">
+                      <div className="flex flex-wrap items-center gap-2 mb-1">
                         <span
-                          className={`font-display text-2xl tracking-wide ${
+                          className={`font-display text-xl sm:text-2xl tracking-wide ${
                             isSoldOut ? "text-ocean-dark/60" : "text-ocean-dark"
                           }`}
                         >
@@ -129,11 +115,11 @@ export default function TicketsSection() {
                         </p>
                       )}
                     </div>
-                    <div className="text-right">
+                    <div className="text-right whitespace-nowrap pl-2">
                       {isSoldOut ? (
-                        <span className="text-ocean-dark/40 font-display text-2xl">-</span>
+                        <span className="text-ocean-dark/40 font-display text-xl sm:text-2xl">-</span>
                       ) : (
-                        <span className="text-ocean-dark font-display text-3xl">
+                        <span className="text-ocean-dark font-display text-2xl sm:text-3xl">
                           {formatCurrency(tier.price)}
                         </span>
                       )}
