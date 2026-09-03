@@ -125,19 +125,36 @@ export default function LineupSection() {
                 </div>
               </div>
               
-              <div className="mt-4 sm:mt-0 sm:text-right pl-14 sm:pl-0">
-                <p 
-                  className="text-ocean-dark/50 text-sm tracking-widest uppercase font-semibold"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                >
-                  {artist.time}
-                </p>
-                <p 
-                  className="text-deep-brown/60 text-xs mt-1 font-medium"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                >
-                  {artist.genre}
-                </p>
+              <div className="mt-4 sm:mt-0 sm:text-right pl-14 sm:pl-0 flex flex-col sm:items-end justify-center">
+                {artist.startTime && artist.endTime && (
+                  <div className="flex flex-col gap-1 sm:items-end">
+                    <div className="flex items-center gap-2">
+                      <span className="text-ocean-dark/40 text-[10px] tracking-widest uppercase font-bold" style={{ fontFamily: "Inter, sans-serif" }}>
+                        Início
+                      </span>
+                      <span className="text-ocean-dark font-display text-xl sm:text-2xl tracking-wide min-w-[60px] text-left">
+                        {artist.startTime}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-ocean-dark/40 text-[10px] tracking-widest uppercase font-bold" style={{ fontFamily: "Inter, sans-serif" }}>
+                        Até
+                      </span>
+                      <span className="text-ocean-dark/70 font-display text-lg sm:text-xl tracking-wide min-w-[60px] text-left">
+                        {artist.endTime}
+                      </span>
+                    </div>
+                  </div>
+                )}
+                
+                {artist.genre && (
+                  <p 
+                    className="text-deep-brown/60 text-xs mt-3 font-medium"
+                    style={{ fontFamily: "Inter, sans-serif" }}
+                  >
+                    {artist.genre}
+                  </p>
+                )}
               </div>
             </li>
           ))}
