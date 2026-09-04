@@ -12,6 +12,7 @@ import {
 export interface HeroVideoHandle {
   playForward: () => void;
   playBackward: () => void;
+  isPlaying: () => boolean;
 }
 
 interface HeroScrollVideoProps {
@@ -46,6 +47,9 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
              directionRef.current = -1;
              lastTimeRef.current = performance.now();
           }
+        },
+        isPlaying() {
+          return directionRef.current !== 0;
         }
       }),
       []
