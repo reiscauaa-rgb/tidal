@@ -205,11 +205,12 @@ export default function HeroSection() {
         onProgressChange={handleProgressChange}
       />
 
-      {/* Text overlays — appear as video progresses */}
+      {/* Text overlays — HTML na hero com logo, infos e botão */}
       <div className="absolute inset-0 z-30 pointer-events-none">
         <ScrollOverlayContent progress={progress} />
       </div>
 
+      {/* Indicador de rolagem */}
       <div
         className={`absolute bottom-10 left-0 right-0 z-40 flex flex-col items-center gap-2 pointer-events-none transition-opacity duration-700 ${
           progress < 0.04 ? "opacity-100" : "opacity-0"

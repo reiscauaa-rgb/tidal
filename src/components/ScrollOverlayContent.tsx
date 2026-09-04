@@ -26,13 +26,6 @@ export default function ScrollOverlayContent({ progress }: ScrollOverlayContentP
    *  98–100%: Logo, Event info, CTA button appear at the very end
    */
 
-  const tideRaw = rangeProgress(progress, 0.2, 0.8);
-  // Fade in on first half, fade out on second half
-  const tideOpacity = tideRaw < 0.5
-    ? easeOut(tideRaw * 2)
-    : easeOut((1 - tideRaw) * 2);
-  const tideY = lerp(20, 0, easeOut(Math.min(tideRaw * 2, 1)));
-
   // All final elements (Logo, Info, CTA) appear at the very end (90% - 98%)
   // They will hit 100% opacity exactly when the video pauses at 98%
   const finalRaw = rangeProgress(progress, 0.90, 0.98);
@@ -41,35 +34,6 @@ export default function ScrollOverlayContent({ progress }: ScrollOverlayContentP
 
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-end pb-20 md:pb-24 px-6 pointer-events-none">
-
-      {/* "A MARÉ ESTÁ MUDANDO" — appears early/mid video */}
-      <div
-        className="absolute"
-        style={{
-          top: "45%",
-          left: 0,
-          right: 0,
-          display: "flex",
-          justifyContent: "center",
-          opacity: tideOpacity,
-          transform: `translateY(${tideY}px)`,
-        }}
-        aria-hidden={tideOpacity < 0.05}
-      >
-        <p
-          style={{
-            fontFamily: "Inter, sans-serif",
-            fontSize: "clamp(0.6rem, 2vw, 0.875rem)",
-            fontWeight: 600,
-            letterSpacing: "0.4em",
-            textTransform: "uppercase",
-            color: "rgba(255,255,255,0.9)",
-            textShadow: "0 2px 12px rgba(0,0,0,0.7)",
-          }}
-        >
-          A MARÉ ESTÁ MUDANDO
-        </p>
-      </div>
 
       {/* TIDAL FEST logo — emerges at the very end */}
       <div

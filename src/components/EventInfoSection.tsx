@@ -37,18 +37,18 @@ export default function EventInfoSection() {
   return (
     <section
       id="local"
-      className="relative w-full bg-[#E8D4BB] flex justify-center overflow-hidden"
+      className="relative w-full bg-[#E8D4BB] flex flex-col items-center justify-center overflow-hidden"
       aria-labelledby="info-title"
     >
       <h2 id="info-title" className="sr-only">Data e Local</h2>
 
       {/* Gradient Transition from previous section (#EAD8C0) */}
-      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-[#EAD8C0] to-transparent z-10 pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-24 md:h-32 bg-gradient-to-b from-[#EAD8C0] to-transparent z-10 pointer-events-none" />
 
-      {/* Main Responsive Container mapped exactly to the 576x1024 image */}
+      {/* ─── MOBILE VERSION (< md): Mantém o flyer vertical original ─── */}
       <div
         ref={containerRef}
-        className="relative w-full mx-auto"
+        className="block md:hidden relative w-full mx-auto"
         style={{
           maxWidth: "500px",
           aspectRatio: "576 / 1024",
@@ -267,6 +267,125 @@ export default function EventInfoSection() {
                 Waze
               </span>
             </a>
+          </div>
+        </div>
+      </div>
+
+      {/* ─── DESKTOP VERSION (md+): Fundo normal limpo e layout 2 colunas espaçoso ─── */}
+      <div className="hidden md:flex flex-col items-center w-full max-w-6xl mx-auto px-6 py-20 z-20">
+        <p
+          className="text-[#063E52] font-bold tracking-[0.3em] uppercase text-sm mb-4"
+          style={{ fontFamily: "Inter, sans-serif" }}
+        >
+          Informações do evento
+        </p>
+        <h2
+          className="text-[#063E52] text-5xl lg:text-6xl mb-12 uppercase tracking-wide text-center"
+          style={{ fontFamily: "Bebas Neue, sans-serif" }}
+        >
+          QUANDO & ONDE
+        </h2>
+
+        <div className="grid grid-cols-2 gap-8 w-full">
+          {/* Card QUANDO */}
+          <div
+            className="p-8 lg:p-10 rounded-2xl border border-ocean-dark/10 shadow-xl flex flex-col justify-between backdrop-blur-md"
+            style={{ background: "rgba(255, 255, 255, 0.7)" }}
+          >
+            <div>
+              <div className="flex items-center gap-2 mb-6">
+                <Calendar className="text-[#13BBC4]" size={20} />
+                <span className="text-[#13BBC4] font-bold tracking-[0.2em] text-xs uppercase" style={{ fontFamily: "Inter, sans-serif" }}>
+                  QUANDO
+                </span>
+              </div>
+
+              <div className="flex items-baseline gap-4 mb-6">
+                <span className="text-[#063E52] font-display text-8xl leading-none">
+                  10
+                </span>
+                <div className="flex flex-col">
+                  <span className="text-[#063E52] font-display text-4xl leading-none">
+                    OUTUBRO
+                  </span>
+                  <span className="text-[#13BBC4] font-bold tracking-widest text-xs uppercase mt-1" style={{ fontFamily: "Inter, sans-serif" }}>
+                    SÁBADO • 2026
+                  </span>
+                </div>
+              </div>
+
+              <div className="border-t border-[#063E52]/15 pt-6 flex justify-between items-center mb-8">
+                <div>
+                  <span className="text-[#063E52]/70 text-xs font-semibold uppercase tracking-wider block mb-1" style={{ fontFamily: "Inter, sans-serif" }}>
+                    Início a partir das
+                  </span>
+                  <span className="text-[#063E52] font-display text-4xl">
+                    22:30
+                  </span>
+                </div>
+                <p className="text-[#063E52]/80 text-sm font-medium text-right max-w-[180px]" style={{ fontFamily: "Inter, sans-serif" }}>
+                  Festa até o amanhecer do dia 11.
+                </p>
+              </div>
+            </div>
+
+            <a
+              href={event.calendarUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-4 flex items-center justify-center gap-2 border-2 border-[#13BBC4] rounded-lg text-[#063E52] font-bold text-xs uppercase tracking-widest hover:bg-[#13BBC4]/10 transition-colors"
+              style={{ fontFamily: "Inter, sans-serif" }}
+            >
+              <Calendar size={16} className="text-[#13BBC4]" />
+              Adicionar ao calendário
+            </a>
+          </div>
+
+          {/* Card ONDE */}
+          <div
+            className="p-8 lg:p-10 rounded-2xl border border-ocean-dark/10 shadow-xl flex flex-col justify-between backdrop-blur-md"
+            style={{ background: "rgba(6, 62, 82, 0.95)" }}
+          >
+            <div>
+              <div className="flex items-center gap-2 mb-6">
+                <MapPin className="text-[#13BBC4]" size={20} />
+                <span className="text-[#13BBC4] font-bold tracking-[0.2em] text-xs uppercase" style={{ fontFamily: "Inter, sans-serif" }}>
+                  ONDE
+                </span>
+              </div>
+
+              <div className="mb-6">
+                <h3 className="text-white font-display text-5xl lg:text-6xl leading-tight mb-2">
+                  PRAIA DO<br />PARQUE TURÍSTICO
+                </h3>
+                <p className="text-[#13BBC4] font-bold text-sm tracking-wider uppercase" style={{ fontFamily: "Inter, sans-serif" }}>
+                  {event.city}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-4 mt-8">
+              <a
+                href={event.locationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 py-4 flex items-center justify-center gap-2 border border-white/30 rounded-lg text-white font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-colors"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                <MapPin size={16} className="text-[#13BBC4]" />
+                Google Maps
+              </a>
+              <a
+                href={event.directionsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 py-4 flex items-center justify-center gap-2 border border-white/30 rounded-lg text-white font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-colors"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                <Navigation size={16} className="text-[#13BBC4]" />
+                Waze
+              </a>
+            </div>
           </div>
         </div>
       </div>
