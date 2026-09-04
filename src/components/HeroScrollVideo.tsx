@@ -54,9 +54,11 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
     useEffect(() => {
       const ua = window.navigator.userAgent;
       const isOldIOS = /iP(hone|ad|od)/.test(ua) && /(OS 11_|OS 12_|OS 13_|OS 14_|OS 15_)/.test(ua);
+      const isOldAndroid = /Android ([4-9]|10|11)(\.|;)/.test(ua);
       const isLowPower = Boolean(window.navigator.hardwareConcurrency && window.navigator.hardwareConcurrency <= 4);
+      const isLowMemory = ('deviceMemory' in window.navigator) && ((window.navigator as any).deviceMemory <= 3);
       const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      setReducedMotion(Boolean(prefersReduced || isOldIOS || isLowPower));
+      setReducedMotion(Boolean(prefersReduced || isOldIOS || isOldAndroid || isLowPower || isLowMemory));
     }, []);
 
     // RAF auto-play interpolation loop

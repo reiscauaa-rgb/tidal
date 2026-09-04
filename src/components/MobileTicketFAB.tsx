@@ -14,22 +14,12 @@ export default function MobileTicketFAB() {
       setVisible(isPastHero && !isTicketsVisible);
     };
 
-    const onHeroProgress = (e: CustomEvent) => {
-      isPastHero = e.detail > 0.95;
-      updateVisibility();
-    };
-
     const onScroll = () => {
-      // Fallback de segurança: se rolou mais que a altura do hero pin (que costuma ser uns 600vh)
-      if (window.scrollY > window.innerHeight * 5) {
-        isPastHero = true;
-      } else if (window.scrollY < 10) {
-        isPastHero = false;
-      }
+      // Oculta completamente na Hero. Só mostra quando o usuário descer 120% da tela inicial.
+      isPastHero = window.scrollY > window.innerHeight * 1.2;
       updateVisibility();
     };
 
-    window.addEventListener("heroProgress", onHeroProgress as EventListener);
     window.addEventListener("scroll", onScroll, { passive: true });
     
     // Chama no início para garantir o estado inicial
@@ -51,7 +41,6 @@ export default function MobileTicketFAB() {
     }
 
     return () => {
-      window.removeEventListener("heroProgress", onHeroProgress as EventListener);
       window.removeEventListener("scroll", onScroll);
       if (observer) observer.disconnect();
     };
