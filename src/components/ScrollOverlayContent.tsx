@@ -108,8 +108,8 @@ export default function ScrollOverlayContent({ progress }: ScrollOverlayContentP
 
       {/* CTA button — bottom of video */}
       <div
-        className="pointer-events-auto"
         style={{
+          pointerEvents: finalOpacity > 0.8 ? "auto" : "none",
           opacity: finalOpacity,
           transform: `translateY(${finalY}px)`,
         }}
