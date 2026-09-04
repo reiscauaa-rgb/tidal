@@ -113,34 +113,36 @@ export default function TicketsSection() {
           aria-modal="true"
           aria-label="Comunicado importante antes de comprar"
         >
-          {/* Backdrop */}
+          {/* Backdrop com leve gradiente escuro */}
           <div
-            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-sm"
             onClick={() => setShowPopup(false)}
           />
 
-          {/* Modal Container */}
-          <div className="relative z-10 w-full max-w-sm max-h-[90dvh] flex flex-col bg-ocean-dark/95 backdrop-blur-md rounded-xl shadow-2xl border border-white/10 overflow-hidden">
+          {/* Modal Container sem fundo azul */}
+          <div className="relative z-10 w-full max-w-sm max-h-[90dvh] flex flex-col gap-3">
             
-            {/* Header Fixo */}
-            <div className="flex justify-between items-center p-4 border-b border-white/10 shrink-0 bg-ocean-dark">
-              <div className="flex items-center gap-2">
-                <span className="text-turquoise text-lg">⚠️</span>
-                <h3 className="text-white text-xs sm:text-sm uppercase tracking-widest font-bold" style={{ fontFamily: "Inter, sans-serif" }}>
-                  Aviso Importante
-                </h3>
-              </div>
+            {/* Botão fechar */}
+            <div className="flex justify-end shrink-0">
               <button
                 onClick={() => setShowPopup(false)}
-                className="text-white/70 hover:text-white transition-colors"
+                className="text-white/60 hover:text-white transition-colors"
                 aria-label="Fechar"
               >
-                <X size={24} />
+                <X size={28} />
               </button>
             </div>
 
-            {/* Área Rolável (Imagem + Texto) */}
-            <div className="flex-1 overflow-y-auto no-scrollbar p-4 flex flex-col items-center gap-4">
+            {/* Área Rolável (Aviso, Imagem e Botão juntinhos) */}
+            <div className="flex flex-col items-center gap-3 overflow-y-auto no-scrollbar pb-4">
+              
+              <div className="flex items-center gap-2 shrink-0">
+                <span className="text-turquoise text-sm">⚠️</span>
+                <h3 className="text-white text-xs sm:text-sm uppercase tracking-widest font-bold" style={{ fontFamily: "Inter, sans-serif", textShadow: "0 2px 10px rgba(0,0,0,0.5)" }}>
+                  Aviso Importante
+                </h3>
+              </div>
+
               <Image
                 src="/images/comunicado.jpg"
                 alt="Comunicado importante — Regras do Open"
@@ -148,20 +150,18 @@ export default function TicketsSection() {
                 height={800}
                 quality={80}
                 loading="lazy"
-                className="w-[85%] sm:w-full rounded-lg shadow-lg"
-                style={{ maxHeight: "55vh", objectFit: "contain" }}
+                className="w-full sm:w-[90%] rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] shrink-0"
+                style={{ maxHeight: "60vh", objectFit: "contain" }}
               />
               
-              <p className="text-white/80 text-center text-[10px] sm:text-xs uppercase tracking-wider px-2" style={{ fontFamily: "Inter, sans-serif", lineHeight: "1.6" }}>
-                Por favor, leia o comunicado acima para conhecer as regras do evento antes de prosseguir.
+              <p className="text-white/80 text-center text-[10px] sm:text-xs uppercase tracking-wider px-2 shrink-0 drop-shadow-md" style={{ fontFamily: "Inter, sans-serif" }}>
+                Leia as regras do evento antes de prosseguir.
               </p>
-            </div>
 
-            {/* Botão Fixo no Rodapé */}
-            <div className="p-4 border-t border-white/10 shrink-0 bg-ocean-dark">
+              {/* Botão colado na imagem */}
               <button
                 onClick={handleConfirm}
-                className="w-full py-3 sm:py-4 flex items-center justify-center text-xs sm:text-sm tracking-[0.2em] uppercase font-bold text-white transition-[transform,box-shadow] active:scale-95 rounded-md shadow-lg hover:shadow-xl"
+                className="w-full py-4 mt-1 flex items-center justify-center text-xs sm:text-sm tracking-[0.2em] uppercase font-bold text-white transition-[transform,box-shadow] active:scale-95 rounded-md shadow-[0_0_20px_rgba(113,127,70,0.4)] hover:shadow-[0_0_30px_rgba(113,127,70,0.6)] shrink-0"
                 style={{
                   background: "linear-gradient(135deg, #717f46 0%, #30371c 100%)",
                   fontFamily: "Inter, sans-serif",
