@@ -55,8 +55,7 @@ export default function TicketsPanelEffect() {
     ).to(panel, { opacity: 0, duration: 0.1 });
 
     return () => {
-      tl.scrollTrigger?.kill();
-      tl.kill();
+      ScrollTrigger.getAll().forEach((st) => st.kill());
     };
   }, []);
 
