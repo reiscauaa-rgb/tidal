@@ -51,6 +51,14 @@ export default function HeroSection() {
   const [videoEnded, setVideoEnded] = useState(false);
   const lastTouchY = useRef<number | null>(null);
 
+  // Força o scroll para o topo sempre que o site é carregado
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.history.scrollRestoration = "manual";
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+  }, []);
+
   // Keep videoEnded accessible inside event listeners without re-binding them
   const videoEndedRef = useRef(false);
 
