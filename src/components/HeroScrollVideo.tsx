@@ -52,21 +52,13 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
     );
 
     useEffect(() => {
-      const ua = window.navigator.userAgent;
-      const isOldIOS = /iP(hone|ad|od)/.test(ua) && /(OS 11_|OS 12_|OS 13_|OS 14_|OS 15_)/.test(ua);
-      const isOldAndroid = /Android ([4-9]|10|11)(\.|;)/.test(ua);
-      const isLowPower = Boolean(window.navigator.hardwareConcurrency && window.navigator.hardwareConcurrency <= 4);
-      const isLowMemory = ('deviceMemory' in window.navigator) && ((window.navigator as any).deviceMemory <= 3);
-      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      setReducedMotion(Boolean(prefersReduced || isOldIOS || isOldAndroid || isLowPower || isLowMemory));
+      setReducedMotion(
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      );
     }, []);
 
-    // RAF auto-play interpolation loop
     useEffect(() => {
-      if (reducedMotion) {
-        onVideoEnd();
-        return;
-      }
+      if (reducedMotion) return;
 
       const video = videoRef.current;
       if (!video) return;
@@ -175,17 +167,12 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
 
     if (reducedMotion) {
       return (
-        <video
-          className="absolute inset-0 w-full h-full object-cover z-10"
-          muted
-          playsInline
-          autoPlay
-          loop
-          poster="/images/tidal-hero-poster-mobile.webp"
-        >
-          <source src="/videos/tidal-hero-mobile.mp4" type="video/mp4" media="(max-width: 1023px)" />
-          <source src="/videos/tidal-hero-desktop.mp4" type="video/mp4" />
-        </video>
+        <div
+          className="absolute inset-0"
+          style={{ background: "#EAD8C0" }}
+          role="img"
+          aria-label="TIDAL FEST"
+        />
       );
     }
 
