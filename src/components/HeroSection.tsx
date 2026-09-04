@@ -207,8 +207,8 @@ export default function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full cursor-pointer"
-      style={{ height: "100vh", zIndex: 0 }}
+      className="relative w-full cursor-pointer h-screen"
+      style={{ height: "100dvh", zIndex: 0 }}
       aria-label="Abertura TIDAL FEST — role ou clique para assistir"
     >
       <HeroScrollVideo
@@ -225,9 +225,10 @@ export default function HeroSection() {
 
       {/* Indicador de rolagem */}
       <div
-        className={`absolute bottom-10 left-0 right-0 z-40 flex flex-col items-center gap-2 pointer-events-none transition-opacity duration-700 ${
+        className={`absolute left-0 right-0 z-40 flex flex-col items-center gap-2 pointer-events-none transition-opacity duration-700 ${
           progress < 0.04 ? "opacity-100" : "opacity-0"
         }`}
+        style={{ bottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
         aria-hidden="true"
       >
         <span
