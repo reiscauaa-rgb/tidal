@@ -10,10 +10,10 @@ export const event = {
   description:
     "Quando o sol encontra o oceano, uma nova frequência desperta. A Tidal Fest nasce entre ondas, reflexos e música para transformar a praia em uma experiência que não termina quando a noite acaba.",
   organizer: "Caiçara Eventos",
-  // Placeholders — update with actual URLs before launch
-  locationUrl: "#",
-  directionsUrl: "#",
-  calendarUrl: "#",
+  // Links de localização
+  locationUrl: "https://www.google.com/maps/search/Praia+do+Parque+Turístico+Peruíbe+SP",
+  directionsUrl: "https://waze.com/ul?q=Praia+do+Parque+Turistico+Peruibe+SP&navigate=yes",
+  calendarUrl: "https://calendar.google.com/calendar/render?action=TEMPLATE&text=TIDAL+FEST&dates=20261010T223000/-03:00/20261011T070000/-03:00&details=Tidal+Fest+—+Praia+do+Parque+Turístico,+Peruíbe+SP&location=Praia+do+Parque+Turístico,+Peruíbe,+SP",
   // SEO
   siteUrl: "https://tidalfest.com.br",
   ogImage: "/images/tidal-hero-poster-desktop.webp",
