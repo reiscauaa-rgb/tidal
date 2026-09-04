@@ -94,13 +94,13 @@ export default function HeroSection() {
   // This prevents the re-registration race condition that causes the scroll freeze.
   useEffect(() => {
     const handleForwardInteraction = () => {
-      if (!videoEndedRef.current && !videoRef.current?.isPlaying()) {
+      if (!videoEndedRef.current) {
         videoRef.current?.playForward();
       }
     };
 
     const handleBackwardInteraction = () => {
-      if (videoEndedRef.current && window.scrollY <= 0 && !videoRef.current?.isPlaying()) {
+      if (videoEndedRef.current && window.scrollY <= 0) {
         videoEndedRef.current = false;
         setVideoEnded(false);
         videoRef.current?.playBackward();
@@ -118,9 +118,6 @@ export default function HeroSection() {
       }
       // Video not ended: consume scroll to drive video
       if (e.cancelable) e.preventDefault();
-      
-      if (videoRef.current?.isPlaying()) return; // Ignora scroll se o vídeo já estiver tocando
-
       if (e.deltaY > 0) {
         handleForwardInteraction();
       } else if (e.deltaY < 0) {
@@ -147,9 +144,6 @@ export default function HeroSection() {
 
       if (e.cancelable) e.preventDefault();
       lastTouchY.current = e.touches[0].clientY;
-
-      if (videoRef.current?.isPlaying()) return; // Ignora dedo se o vídeo já estiver tocando
-
       if (delta > 5) handleForwardInteraction();
       else if (delta < -5) videoRef.current?.playBackward();
     };
@@ -167,13 +161,6 @@ export default function HeroSection() {
           handleBackwardInteraction();
         }
         return;
-      }
-
-      if (videoRef.current?.isPlaying()) {
-        if (["ArrowDown", "ArrowUp", "PageDown", "PageUp", " "].includes(e.key)) {
-          if (e.cancelable) e.preventDefault();
-        }
-        return; // Ignora teclado se o vídeo já estiver tocando
       }
 
       if (["ArrowDown", " ", "PageDown"].includes(e.key)) {
