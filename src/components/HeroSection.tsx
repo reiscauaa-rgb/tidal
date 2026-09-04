@@ -94,29 +94,39 @@ export default function HeroSection() {
   // This prevents the re-registration race condition that causes the scroll freeze.
   useEffect(() => {
     const handleForwardInteraction = () => {
-      if (!videoEndedRef.current) {
+      if (!videoEndedRef.current && !videoRef.current?.isPlaying()) {
         videoRef.current?.playForward();
       }
     };
 
     const handleBackwardInteraction = () => {
-      if (videoEndedRef.current && window.scrollY <= 0) {
+      // Só volta se estiver no topo, o vídeo já tiver acabado e não estiver tocando
+      if (videoEndedRef.current && window.scrollY <= 0 && !videoRef.current?.isPlaying()) {
         videoEndedRef.current = false;
         setVideoEnded(false);
+        // Garante que a página cole no topo
+        window.scrollTo({ top: 0, behavior: "instant" });
         videoRef.current?.playBackward();
       }
     };
 
     const onWheel = (e: WheelEvent) => {
+      // TRAVA ABSOLUTA: Ignora scroll totalmente se o vídeo está em movimento
+      if (videoRef.current?.isPlaying()) {
+        if (e.cancelable) e.preventDefault();
+        return;
+      }
+
       if (videoEndedRef.current) {
-        // Scroll is free — only intercept if user tries to scroll UP past the top
+        // Livre para navegar. Só intercepta se tentar rolar para cima no topo exato.
         if (window.scrollY <= 0 && e.deltaY < 0) {
           if (e.cancelable) e.preventDefault();
           handleBackwardInteraction();
         }
         return;
       }
-      // Video not ended: consume scroll to drive video
+      
+      // Vídeo não acabou, então consome o scroll para dar o gatilho inicial
       if (e.cancelable) e.preventDefault();
       if (e.deltaY > 0) {
         handleForwardInteraction();
@@ -133,7 +143,15 @@ export default function HeroSection() {
       if (lastTouchY.current === null) return;
       const delta = lastTouchY.current - e.touches[0].clientY;
 
+      // TRAVA ABSOLUTA: Ignora dedo totalmente se o vídeo está em movimento
+      if (videoRef.current?.isPlaying()) {
+        if (e.cancelable) e.preventDefault();
+        lastTouchY.current = e.touches[0].clientY;
+        return;
+      }
+
       if (videoEndedRef.current) {
+        // Delta < 0 = Dedo movendo para baixo = Rolando a página para cima
         if (window.scrollY <= 0 && delta < 0) {
           if (e.cancelable) e.preventDefault();
           handleBackwardInteraction();
@@ -154,6 +172,14 @@ export default function HeroSection() {
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (["INPUT", "TEXTAREA"].includes((e.target as HTMLElement).tagName)) return;
+
+      // TRAVA ABSOLUTA no teclado
+      if (videoRef.current?.isPlaying()) {
+        if (["ArrowDown", "ArrowUp", "PageDown", "PageUp", " "].includes(e.key)) {
+          if (e.cancelable) e.preventDefault();
+        }
+        return;
+      }
 
       if (videoEndedRef.current) {
         if (window.scrollY <= 0 && ["ArrowUp", "PageUp"].includes(e.key)) {
