@@ -119,41 +119,58 @@ export default function TicketsSection() {
             onClick={() => setShowPopup(false)}
           />
 
-          {/* Modal */}
-          <div className="relative z-10 w-full max-w-sm flex flex-col items-center gap-4">
-            {/* Botão fechar */}
-            <button
-              onClick={() => setShowPopup(false)}
-              className="self-end text-white/70 hover:text-white transition-colors p-1"
-              aria-label="Fechar"
-            >
-              <X size={28} />
-            </button>
+          {/* Modal Container */}
+          <div className="relative z-10 w-full max-w-sm max-h-[90dvh] flex flex-col bg-ocean-dark/95 backdrop-blur-md rounded-xl shadow-2xl border border-white/10 overflow-hidden">
+            
+            {/* Header Fixo */}
+            <div className="flex justify-between items-center p-4 border-b border-white/10 shrink-0 bg-ocean-dark">
+              <div className="flex items-center gap-2">
+                <span className="text-turquoise text-lg">⚠️</span>
+                <h3 className="text-white text-xs sm:text-sm uppercase tracking-widest font-bold" style={{ fontFamily: "Inter, sans-serif" }}>
+                  Aviso Importante
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowPopup(false)}
+                className="text-white/70 hover:text-white transition-colors"
+                aria-label="Fechar"
+              >
+                <X size={24} />
+              </button>
+            </div>
 
-            {/* Imagem do comunicado */}
-            <Image
-              src="/images/comunicado.jpg"
-              alt="Comunicado importante — Regras do Open"
-              width={600}
-              height={800}
-              quality={80}
-              loading="lazy"
-              className="w-full rounded-xl shadow-2xl"
-              style={{ maxHeight: "75vh", objectFit: "contain" }}
-            />
+            {/* Área Rolável (Imagem + Texto) */}
+            <div className="flex-1 overflow-y-auto no-scrollbar p-4 flex flex-col items-center gap-4">
+              <Image
+                src="/images/comunicado.jpg"
+                alt="Comunicado importante — Regras do Open"
+                width={600}
+                height={800}
+                quality={80}
+                loading="lazy"
+                className="w-[85%] sm:w-full rounded-lg shadow-lg"
+                style={{ maxHeight: "55vh", objectFit: "contain" }}
+              />
+              
+              <p className="text-white/80 text-center text-[10px] sm:text-xs uppercase tracking-wider px-2" style={{ fontFamily: "Inter, sans-serif", lineHeight: "1.6" }}>
+                Por favor, leia o comunicado acima para conhecer as regras do evento antes de prosseguir.
+              </p>
+            </div>
 
-            {/* Botão confirmar */}
-            <button
-              onClick={handleConfirm}
-              className="w-full py-4 flex items-center justify-center text-sm tracking-[0.2em] uppercase font-bold text-white transition-[transform,box-shadow] active:scale-95 rounded-md shadow-lg hover:shadow-xl"
-              style={{
-                background: "linear-gradient(135deg, #717f46 0%, #30371c 100%)",
-                fontFamily: "Inter, sans-serif",
-                minHeight: "52px",
-              }}
-            >
-              Entendi — GARANTIR INGRESSO
-            </button>
+            {/* Botão Fixo no Rodapé */}
+            <div className="p-4 border-t border-white/10 shrink-0 bg-ocean-dark">
+              <button
+                onClick={handleConfirm}
+                className="w-full py-3 sm:py-4 flex items-center justify-center text-xs sm:text-sm tracking-[0.2em] uppercase font-bold text-white transition-[transform,box-shadow] active:scale-95 rounded-md shadow-lg hover:shadow-xl"
+                style={{
+                  background: "linear-gradient(135deg, #717f46 0%, #30371c 100%)",
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                ENTENDI — GARANTIR INGRESSO
+              </button>
+            </div>
+
           </div>
         </div>
       )}
