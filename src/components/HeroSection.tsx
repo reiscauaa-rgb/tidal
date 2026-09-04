@@ -119,7 +119,8 @@ export default function HeroSection() {
 
       if (videoEndedRef.current) {
         // Livre para navegar. Só intercepta se tentar rolar para cima no topo exato.
-        if (window.scrollY <= 0 && e.deltaY < 0) {
+        // THRESHOLD: -20 para evitar disparos acidentais de mouses sensíveis
+        if (window.scrollY <= 0 && e.deltaY < -20) {
           if (e.cancelable) e.preventDefault();
           handleBackwardInteraction();
         }
@@ -128,9 +129,9 @@ export default function HeroSection() {
       
       // Vídeo não acabou, então consome o scroll para dar o gatilho inicial
       if (e.cancelable) e.preventDefault();
-      if (e.deltaY > 0) {
+      if (e.deltaY > 15) {
         handleForwardInteraction();
-      } else if (e.deltaY < 0) {
+      } else if (e.deltaY < -15) {
         videoRef.current?.playBackward();
       }
     };
@@ -152,7 +153,8 @@ export default function HeroSection() {
 
       if (videoEndedRef.current) {
         // Delta < 0 = Dedo movendo para baixo = Rolando a página para cima
-        if (window.scrollY <= 0 && delta < 0) {
+        // THRESHOLD: -15 para evitar que o tremor inicial do dedo dispare o rewind
+        if (window.scrollY <= 0 && delta < -15) {
           if (e.cancelable) e.preventDefault();
           handleBackwardInteraction();
         }
@@ -162,8 +164,8 @@ export default function HeroSection() {
 
       if (e.cancelable) e.preventDefault();
       lastTouchY.current = e.touches[0].clientY;
-      if (delta > 5) handleForwardInteraction();
-      else if (delta < -5) videoRef.current?.playBackward();
+      if (delta > 15) handleForwardInteraction();
+      else if (delta < -15) videoRef.current?.playBackward();
     };
 
     const onTouchEnd = () => {
