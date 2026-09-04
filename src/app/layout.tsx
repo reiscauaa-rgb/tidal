@@ -21,9 +21,12 @@ export const metadata: Metadata = {
   description: event.description,
   metadataBase: new URL(event.siteUrl),
   icons: {
-    icon: "/icon.jpg",
-    shortcut: "/icon.jpg",
-    apple: "/icon.jpg",
+    icon: [
+      { url: "/favicon.ico?v=2" },
+      { url: "/icon.png?v=2", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico?v=2",
+    apple: "/apple-icon.png?v=2",
   },
   openGraph: {
     title: "Tidal Fest",
@@ -102,6 +105,9 @@ export default function RootLayout({
     <html lang="pt-BR" className={`${bebasNeue.variable} ${inter.variable}`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <link rel="icon" href="/favicon.ico?v=2" sizes="any" />
+        <link rel="icon" href="/icon.png?v=2" type="image/png" />
+        <link rel="apple-touch-icon" href="/apple-icon.png?v=2" />
       </head>
       <body className="antialiased bg-deep-bg text-chrome-silver overflow-x-hidden">
         {/* GA4 */}
