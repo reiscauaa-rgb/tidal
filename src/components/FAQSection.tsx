@@ -8,8 +8,6 @@ function FAQItem({ item, index }: { item: (typeof faq)[0]; index: number }) {
   const [open, setOpen] = useState(false);
   const id = `faq-answer-${item.id}`;
 
-  const isPlaceholder = item.answer.startsWith("⚠️");
-
   return (
     <div
       className="border-b"
@@ -42,7 +40,7 @@ function FAQItem({ item, index }: { item: (typeof faq)[0]; index: number }) {
         id={id}
         role="region"
         aria-labelledby={`faq-btn-${item.id}`}
-        className="overflow-hidden transition-all duration-400 ease-in-out"
+        className="overflow-hidden transition-[max-height,opacity] duration-400 ease-in-out"
         style={{
           maxHeight: open ? "400px" : "0",
           opacity: open ? 1 : 0,
@@ -50,9 +48,7 @@ function FAQItem({ item, index }: { item: (typeof faq)[0]; index: number }) {
       >
         <div className="pb-5 md:pb-6">
           <p
-            className={`text-sm leading-relaxed ${
-              isPlaceholder ? "text-coral font-medium" : "text-ocean-dark/80 font-medium"
-            }`}
+            className="text-sm leading-relaxed text-ocean-dark/80 font-medium"
             style={{ fontFamily: "Inter, sans-serif" }}
           >
             {item.answer}

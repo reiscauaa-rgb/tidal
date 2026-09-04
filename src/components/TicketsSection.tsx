@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { ShieldCheck, Ticket, Wine, X } from "lucide-react";
 
 const SYMPLA_URL = "https://www.sympla.com.br/evento/tidal-fest/3526727";
@@ -27,9 +28,13 @@ export default function TicketsSection() {
 
           {/* Personagem com o ingresso */}
           <div className="w-full flex justify-center">
-            <img
+            <Image
               src="/images/ticket-character.png"
               alt="Personagem Tidal segurando ingresso"
+              width={400}
+              height={420}
+              quality={75}
+              loading="lazy"
               className="w-auto h-[240px] sm:h-[320px] md:h-[420px] object-contain object-bottom"
               style={{ display: "block" }}
             />
@@ -38,7 +43,7 @@ export default function TicketsSection() {
           {/* Card de ingressos */}
           <div
             className="w-full max-w-lg flex flex-col gap-6 p-6 sm:p-8 md:p-10 border border-ocean-dark/10 shadow-xl rounded-md"
-            style={{ background: "rgba(255, 255, 255, 0.6)", backdropFilter: "blur(20px)" }}
+            style={{ background: "rgba(255, 255, 255, 0.65)", backdropFilter: "blur(8px)" }}
           >
             {/* Infos */}
             <div className="flex flex-col gap-4">
@@ -82,7 +87,7 @@ export default function TicketsSection() {
             {/* Botão que abre o popup */}
             <button
               onClick={handleBuyClick}
-              className="w-full py-4 flex items-center justify-center gap-2 text-sm tracking-[0.2em] uppercase font-bold text-white transition-all active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white rounded-md shadow-lg hover:shadow-xl"
+              className="w-full py-4 flex items-center justify-center gap-2 text-sm tracking-[0.2em] uppercase font-bold text-white transition-[transform,box-shadow] active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white rounded-md shadow-lg hover:shadow-xl"
               style={{
                 background: "linear-gradient(135deg, #717f46 0%, #30371c 100%)",
                 fontFamily: "Inter, sans-serif",
@@ -126,9 +131,13 @@ export default function TicketsSection() {
             </button>
 
             {/* Imagem do comunicado */}
-            <img
+            <Image
               src="/images/comunicado.jpg"
               alt="Comunicado importante — Regras do Open"
+              width={600}
+              height={800}
+              quality={80}
+              loading="lazy"
               className="w-full rounded-xl shadow-2xl"
               style={{ maxHeight: "75vh", objectFit: "contain" }}
             />
@@ -136,7 +145,7 @@ export default function TicketsSection() {
             {/* Botão confirmar */}
             <button
               onClick={handleConfirm}
-              className="w-full py-4 flex items-center justify-center text-sm tracking-[0.2em] uppercase font-bold text-white transition-all active:scale-95 rounded-md shadow-lg hover:shadow-xl"
+              className="w-full py-4 flex items-center justify-center text-sm tracking-[0.2em] uppercase font-bold text-white transition-[transform,box-shadow] active:scale-95 rounded-md shadow-lg hover:shadow-xl"
               style={{
                 background: "linear-gradient(135deg, #717f46 0%, #30371c 100%)",
                 fontFamily: "Inter, sans-serif",

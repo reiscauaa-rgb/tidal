@@ -43,8 +43,8 @@ export default function MobileMenu({ isOpen, onClose, navItems }: MobileMenuProp
       }`}
       style={{
         background: "rgba(234, 216, 192, 0.95)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
       }}
     >
       <button

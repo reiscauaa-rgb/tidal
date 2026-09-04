@@ -107,7 +107,7 @@ export default function LineupSection() {
           {lineup.map((artist, i) => (
             <li
               key={artist.id}
-              className="group relative flex flex-col sm:flex-row sm:items-center justify-between py-8 md:py-10 border-b border-ocean-dark/10 transition-all duration-300 hover:bg-white/40 px-4 -mx-4 rounded-sm"
+              className="group relative flex flex-col sm:flex-row sm:items-center justify-between py-8 md:py-10 border-b border-ocean-dark/10 transition-[background-color] duration-300 hover:bg-white/40 px-4 -mx-4 rounded-sm"
               style={{ opacity: 0, transform: "translateX(-30px)" }}
             >
               {/* Animated hover background */}

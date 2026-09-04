@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -28,6 +29,7 @@ export default function CharacterSection() {
   const lastTsRef = useRef(0);
   const isDragging = useRef(false);
   const lastPointerX = useRef(0);
+  const isVisibleRef = useRef(false);
 
   const waveStart = "M 0 100 V 50 Q 50 0 100 50 V 100 z";
   const waveEnd = "M 0 100 V 0 Q 50 0 100 0 V 100 z";
@@ -67,13 +69,32 @@ export default function CharacterSection() {
 
   useEffect(() => {
     const strip = stripRef.current;
-    if (!strip) return;
+    const section = sectionRef.current;
+    if (!strip || !section) return;
 
     const loopWidth = strip.scrollWidth / 3;
     offsetRef.current = -loopWidth;
     lastTsRef.current = performance.now();
 
+    // Pause RAF when section is not visible
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting;
+        if (entry.isIntersecting && !rafRef.current) {
+          lastTsRef.current = performance.now();
+          rafRef.current = requestAnimationFrame(tick);
+        }
+      },
+      { threshold: 0 }
+    );
+    visibilityObserver.observe(section);
+
     const tick = (ts: number) => {
+      if (!isVisibleRef.current) {
+        rafRef.current = null;
+        return; // Stop the loop when not visible
+      }
+
       const dt = ts - lastTsRef.current;
       lastTsRef.current = ts;
 
@@ -118,6 +139,7 @@ export default function CharacterSection() {
 
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      visibilityObserver.disconnect();
       strip.removeEventListener("pointerdown", onPointerDown);
       strip.removeEventListener("pointermove", onPointerMove);
       strip.removeEventListener("pointerup", onPointerUp);
@@ -189,16 +211,21 @@ export default function CharacterSection() {
           className="absolute left-1/2 -translate-x-1/2 z-20 pointer-events-none overflow-hidden"
           style={{ bottom: "100%", marginBottom: "1px" }}
         >
-          <img
+          <Image
             src="/images/tidal-character-pointing.png"
             alt="Personagem cromado apontando para o carrosel"
+            width={800}
+            height={1000}
+            quality={75}
+            loading="lazy"
             style={{
               width: "clamp(433px, 75vw, 800px)",
+              height: "auto",
               maxWidth: "none",
               objectFit: "contain",
               objectPosition: "bottom",
               display: "block",
-              marginBottom: "-25%", // This pulls the legs down out of the container, effectively cropping them!
+              marginBottom: "-25%",
             }}
           />
         </div>
@@ -219,12 +246,15 @@ export default function CharacterSection() {
                   height: "clamp(340px, 94vw, 420px)",
                 }}
               >
-                <img
+                <Image
                   src={img.src}
                   alt={img.alt}
+                  width={320}
+                  height={420}
+                  quality={75}
+                  loading="lazy"
                   className="w-full h-full object-cover"
                   draggable={false}
-                  loading="lazy"
                 />
               </div>
             ))}

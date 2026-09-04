@@ -1,5 +1,3 @@
-"use client";
-
 import { social } from "@/data/social";
 import { event } from "@/data/event";
 
@@ -38,19 +36,8 @@ export default function Footer() {
               src="/images/logo.svg"
               alt="TIDAL FEST"
               className="h-10 md:h-12 w-auto opacity-90"
-              onError={(e) => {
-                const img = e.currentTarget;
-                img.style.display = "none";
-                const next = img.nextElementSibling as HTMLElement;
-                if (next) next.style.display = "block";
-              }}
+              loading="lazy"
             />
-            <span
-              style={{ display: "none", fontFamily: "Bebas Neue, sans-serif", fontSize: "1.8rem" }}
-              className="text-ocean-dark drop-shadow-sm"
-            >
-              TIDAL<span className="text-turquoise"> FEST</span>
-            </span>
 
             <p
               className="text-ocean-dark/70 text-sm leading-relaxed mt-4 max-w-xs font-medium"

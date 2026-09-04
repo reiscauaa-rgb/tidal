@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
@@ -55,7 +55,8 @@ export default function TicketsPanelEffect() {
     ).to(panel, { opacity: 0, duration: 0.1 });
 
     return () => {
-      ScrollTrigger.getAll().forEach((st) => st.kill());
+      tl.scrollTrigger?.kill();
+      tl.kill();
     };
   }, []);
 

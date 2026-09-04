@@ -102,7 +102,7 @@ export default function FinalCTA() {
             lineHeight: 0.92,
             opacity: 0,
             transform: "translateY(30px)",
-            transition: "all 1s cubic-bezier(0.16, 1, 0.3, 1)",
+            transition: "opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         >
           <span style={{ color: "#FDF6E9" }}>O AMANHECER</span>
@@ -126,7 +126,7 @@ export default function FinalCTA() {
             fontFamily: "Inter, sans-serif",
             opacity: 0,
             transform: "translateY(20px)",
-            transition: "all 0.9s cubic-bezier(0.16, 1, 0.3, 1)",
+            transition: "opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         >
           A maré já começou a subir.

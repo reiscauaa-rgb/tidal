@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import MobileMenu from "./MobileMenu";
+import Image from "next/image";
 
 const navItems = [
   { label: "Experiência", href: "#experiencia" },
@@ -50,7 +51,7 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-700 ${
+        className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-[transform,opacity,background-color,border-color,box-shadow] duration-700 ${
           hidden || !heroRevealed ? "-translate-y-24 opacity-0 pointer-events-none" : "translate-y-0 opacity-100"
         } ${
           scrolled
@@ -65,23 +66,14 @@ export default function Header() {
           className="flex-shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ocean-dark rounded-full"
           aria-label="TIDAL FEST — início"
         >
-          <img
+          <Image
             src="/images/logo.svg"
             alt="TIDAL FEST"
+            width={120}
+            height={28}
+            priority
             className="h-6 md:h-7 w-auto drop-shadow-sm"
-            onError={(e) => {
-              const img = e.currentTarget;
-              img.style.display = "none";
-              const next = img.nextElementSibling as HTMLElement;
-              if (next) next.style.display = "flex";
-            }}
           />
-          <span
-            style={{ display: "none", fontFamily: "Bebas Neue, sans-serif" }}
-            className={`text-xl items-center drop-shadow-sm ${scrolled ? "text-ocean-dark" : "text-white"}`}
-          >
-            TIDAL<span className="text-turquoise ml-1">FEST</span>
-          </span>
         </Link>
 
         {/* Desktop nav */}
@@ -112,17 +104,17 @@ export default function Header() {
           aria-controls="mobile-menu"
         >
           <span
-            className={`block w-5 h-[2px] transition-all duration-300 ${
+            className={`block w-5 h-[2px] transition-[transform,opacity,background-color] duration-300 ${
               menuOpen ? "rotate-45 translate-y-[6px] bg-ocean-dark" : scrolled ? "bg-ocean-dark" : "bg-white"
             }`}
           />
           <span
-            className={`block w-5 h-[2px] transition-all duration-300 ${
+            className={`block w-5 h-[2px] transition-[transform,opacity,background-color] duration-300 ${
               menuOpen ? "opacity-0 bg-ocean-dark" : scrolled ? "bg-ocean-dark" : "bg-white"
             }`}
           />
           <span
-            className={`block w-5 h-[2px] transition-all duration-300 ${
+            className={`block w-5 h-[2px] transition-[transform,opacity,background-color] duration-300 ${
               menuOpen ? "-rotate-45 -translate-y-[6px] bg-ocean-dark" : scrolled ? "bg-ocean-dark" : "bg-white"
             }`}
           />

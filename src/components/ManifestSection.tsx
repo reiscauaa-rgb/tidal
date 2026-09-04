@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -53,10 +54,14 @@ export default function ManifestSection() {
       {/* ─── MOBILE VERSION (< md): Mantém a foto do celular intacta ─── */}
       <div className="block md:hidden relative w-full min-h-screen">
         {/* Background Image no Celular */}
-        <img 
+        <Image 
           src="/images/manifest-board.png" 
           alt="Personagem na praia segurando um quadro branco"
-          className="absolute inset-0 w-full h-full object-cover object-bottom"
+          fill
+          sizes="(max-width: 768px) 100vw, 500px"
+          quality={75}
+          loading="lazy"
+          className="object-cover object-bottom"
           style={{ zIndex: 0 }}
         />
 

@@ -1,17 +1,42 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+
 export default function TicketsHeaderSection() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    const section = sectionRef.current;
+    if (!video || !section) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="relative w-full aspect-video flex flex-col items-center justify-center overflow-hidden">
+    <section ref={sectionRef} className="relative w-full aspect-video flex flex-col items-center justify-center overflow-hidden">
       {/* Background Video (Ping-Pong pre-rendered) */}
       <video
+        ref={videoRef}
         src="/videos/tickets-header-loop.mp4"
         className="absolute inset-0 w-full h-full object-cover"
-        autoPlay
         loop
         muted
         playsInline
-        preload="auto"
+        preload="none"
       />
       
       {/* Text Content - Sem filtros/sombras, apenas o texto limpo centralizado */}

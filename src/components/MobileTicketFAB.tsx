@@ -7,20 +7,59 @@ export default function MobileTicketFAB() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Agora o hero tem 600vh, vamos mostrar o FAB quando passar dele
-    const heroHeight = window.innerHeight * 6;
+    let isTicketsVisible = false;
+    let isPastHero = false;
 
-    const onScroll = () => {
-      setVisible(window.scrollY > heroHeight * 0.9);
+    const updateVisibility = () => {
+      setVisible(isPastHero && !isTicketsVisible);
     };
 
+    const onHeroProgress = (e: CustomEvent) => {
+      isPastHero = e.detail > 0.95;
+      updateVisibility();
+    };
+
+    const onScroll = () => {
+      // Fallback de segurança: se rolou mais que a altura do hero pin (que costuma ser uns 600vh)
+      if (window.scrollY > window.innerHeight * 5) {
+        isPastHero = true;
+      } else if (window.scrollY < 10) {
+        isPastHero = false;
+      }
+      updateVisibility();
+    };
+
+    window.addEventListener("heroProgress", onHeroProgress as EventListener);
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    
+    // Chama no início para garantir o estado inicial
+    onScroll();
+
+    // Observa a seção de ingressos para esconder o botão flutuante quando ela aparecer
+    const ticketsSection = document.getElementById("ingressos");
+    let observer: IntersectionObserver | null = null;
+    
+    if (ticketsSection) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          isTicketsVisible = entry.isIntersecting;
+          updateVisibility();
+        },
+        { rootMargin: "0px 0px -50px 0px" } // Esconde um pouquinho antes de tocar o fundo
+      );
+      observer.observe(ticketsSection);
+    }
+
+    return () => {
+      window.removeEventListener("heroProgress", onHeroProgress as EventListener);
+      window.removeEventListener("scroll", onScroll);
+      if (observer) observer.disconnect();
+    };
   }, []);
 
   return (
     <div
-      className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-40 lg:hidden transition-all duration-400 ${
+      className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-40 lg:hidden transition-[opacity,transform] duration-400 ${
         visible
           ? "opacity-100 translate-y-0 pointer-events-auto"
           : "opacity-0 translate-y-6 pointer-events-none"

@@ -1,6 +1,7 @@
 "use client";
 
 import { event } from "@/data/event";
+import Image from "next/image";
 
 interface ScrollOverlayContentProps {
   progress: number; // 0 to 1 — driven directly by video currentTime / duration
@@ -48,51 +49,19 @@ export default function ScrollOverlayContent({ progress }: ScrollOverlayContentP
         }}
         aria-hidden={finalOpacity < 0.05}
       >
-        <img
+        <Image
           src="/images/logo.svg"
           alt="TIDAL FEST"
+          width={360}
+          height={80}
+          priority
           style={{
             width: "100%",
+            height: "auto",
             filter: "drop-shadow(0 4px 24px rgba(0,0,0,0.6)) brightness(10)",
             // brightness(10) makes the SVG appear white — works as a light overlay on dark video
           }}
-          onError={(e) => {
-            const img = e.currentTarget;
-            img.style.display = "none";
-            const next = img.nextElementSibling as HTMLElement;
-            if (next) next.style.display = "block";
-          }}
         />
-        {/* Text fallback */}
-        <div style={{ display: "none" }}>
-          <span
-            style={{
-              fontFamily: "Bebas Neue, sans-serif",
-              fontSize: "clamp(4rem, 18vw, 9rem)",
-              lineHeight: 1,
-              color: "white",
-              textShadow: "0 4px 24px rgba(0,0,0,0.8)",
-              letterSpacing: "0.03em",
-              display: "block",
-            }}
-          >
-            TIDAL
-          </span>
-          <span
-            style={{
-              fontFamily: "Inter, sans-serif",
-              fontSize: "clamp(1rem, 4vw, 2rem)",
-              letterSpacing: "0.5em",
-              color: "white",
-              fontWeight: 700,
-              textShadow: "0 2px 12px rgba(0,0,0,0.8)",
-              textTransform: "uppercase",
-              display: "block",
-            }}
-          >
-            FEST.
-          </span>
-        </div>
       </div>
 
       {/* Event info — date & venue */}
