@@ -17,20 +17,25 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: `${event.name} — ${event.date} | ${event.city}`,
+  title: "Tidal Fest",
   description: event.description,
   metadataBase: new URL(event.siteUrl),
+  icons: {
+    icon: "/icon.jpg",
+    shortcut: "/icon.jpg",
+    apple: "/icon.jpg",
+  },
   openGraph: {
-    title: `${event.name} — ${event.date} | ${event.city}`,
+    title: "Tidal Fest",
     description: event.description,
     url: event.siteUrl,
-    siteName: event.name,
+    siteName: "Tidal Fest",
     images: [
       {
         url: event.ogImage,
         width: 1200,
         height: 630,
-        alt: `${event.name} — ${event.date} na ${event.venue}, ${event.city}`,
+        alt: "Tidal Fest",
       },
     ],
     locale: "pt_BR",
@@ -38,7 +43,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${event.name} — ${event.date} | ${event.city}`,
+    title: "Tidal Fest",
     description: event.description,
     images: [event.ogImage],
   },

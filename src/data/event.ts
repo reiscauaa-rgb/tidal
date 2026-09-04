@@ -15,6 +15,6 @@ export const event = {
   directionsUrl: "https://waze.com/ul?q=Praia+do+Parque+Turistico+Peruibe+SP&navigate=yes",
   calendarUrl: "https://calendar.google.com/calendar/render?action=TEMPLATE&text=TIDAL+FEST&dates=20261010T223000/-03:00/20261011T070000/-03:00&details=Tidal+Fest+—+Praia+do+Parque+Turístico,+Peruíbe+SP&location=Praia+do+Parque+Turístico,+Peruíbe,+SP",
   // SEO
-  siteUrl: "https://tidalfest.com.br",
-  ogImage: "/images/tidal-hero-poster-desktop.webp",
+  siteUrl: "https://tidalfest.online",
+  ogImage: "/icon.jpg",
 };
