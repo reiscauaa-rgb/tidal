@@ -40,12 +40,14 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
           if (directionRef.current !== 1) {
              directionRef.current = 1;
              lastTimeRef.current = performance.now();
+             setIsLoaded(true);
           }
         },
         playBackward() {
           if (directionRef.current !== -1) {
              directionRef.current = -1;
              lastTimeRef.current = performance.now();
+             setIsLoaded(true);
           }
         },
         isPlaying() {
@@ -75,12 +77,9 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
           video.currentTime = 0.001; // Force render first frame
         }
       };
-      const onCanPlay = () => setIsLoaded(true);
 
       video.addEventListener("loadedmetadata", onMeta);
-      video.addEventListener("canplay", onCanPlay);
       if (video.readyState >= 1) onMeta();
-      if (video.readyState >= 3) setIsLoaded(true);
 
       // --- Auto Unlock attempt ---
       // Try playing the video immediately to force it to show the first frame
@@ -165,7 +164,6 @@ const HeroScrollVideo = forwardRef<HeroVideoHandle, HeroScrollVideoProps>(
       return () => {
         if (rafRef.current) cancelAnimationFrame(rafRef.current);
         video.removeEventListener("loadedmetadata", onMeta);
-        video.removeEventListener("canplay", onCanPlay);
       };
     }, [reducedMotion, onProgressChange, onVideoEnd, onVideoRewound]);
 
