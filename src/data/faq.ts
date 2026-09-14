@@ -10,7 +10,7 @@ export const faq: FAQItem[] = [
     id: "age",
     question: "Qual é a classificação etária?",
     answer:
-      "O Tidal Fest é um evento com formato Open Gin. Por isso, a classificação etária é estritamente para maiores de 18 anos. É obrigatória a apresentação de documento de identidade original com foto na entrada.",
+      "O Tidal Fest é um evento com formato Open Bar (Open Gin e Open Vodka Kawaii das 22:30 às 03:00). Por isso, a classificação etária é estritamente para maiores de 18 anos. É obrigatória a apresentação de documento de identidade original com foto na entrada.",
   },
   {
     id: "rain",
@@ -34,7 +34,7 @@ export const faq: FAQItem[] = [
     id: "parking",
     question: "Haverá estacionamento?",
     answer:
-      "Não. O evento não possui estacionamento. Recomendamos fortemente o uso de aplicativos de transporte para que você possa curtir o evento (e o nosso Open Gin) com total tranquilidade e responsabilidade.",
+      "Não. O evento não possui estacionamento. Recomendamos fortemente o uso de aplicativos de transporte para que você possa curtir o evento (e o nosso Open Gin & Vodka Kawaii) com total tranquilidade e responsabilidade.",
   },
   {
     id: "accessibility",

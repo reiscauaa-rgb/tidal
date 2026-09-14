@@ -12,6 +12,21 @@ export default function TicketsSection() {
   const handleBuyClick = () => setShowPopup(true);
 
   const handleConfirm = () => {
+    if (typeof window !== "undefined") {
+      const w = window as unknown as { fbq?: (...args: unknown[]) => void; gtag?: (...args: unknown[]) => void };
+      if (typeof w.fbq === "function") {
+        w.fbq("track", "AddToCart", {
+          content_name: "Ingresso Tidal Fest",
+          content_category: "Ingressos",
+          currency: "BRL",
+        });
+      }
+      if (typeof w.gtag === "function") {
+        w.gtag("event", "add_to_cart", {
+          items: [{ item_name: "Ingresso Tidal Fest" }],
+        });
+      }
+    }
     setShowPopup(false);
     window.open(SYMPLA_URL, "_blank");
   };
@@ -63,10 +78,10 @@ export default function TicketsSection() {
                 <Wine size={20} className="text-turquoise shrink-0 mt-0.5" />
                 <div>
                   <p className="text-ocean-dark font-bold text-sm uppercase tracking-widest" style={{ fontFamily: "Inter, sans-serif" }}>
-                    Open Gin em todos os ingressos
+                    Open Gin & Open Vodka Kawaii
                   </p>
-                  <p className="text-ocean-dark/60 text-xs mt-1 font-medium" style={{ fontFamily: "Inter, sans-serif" }}>
-                    Sem custo adicional — já incluso na entrada
+                  <p className="text-ocean-dark/70 text-xs mt-1 font-semibold" style={{ fontFamily: "Inter, sans-serif" }}>
+                    Das 22:30 às 03:00 — incluso em todos os ingressos sem custo adicional
                   </p>
                 </div>
               </div>

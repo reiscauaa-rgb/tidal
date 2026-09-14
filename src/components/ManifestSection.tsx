@@ -197,7 +197,7 @@ export default function ManifestSection() {
           </p>
 
           <div className="flex flex-wrap justify-center gap-3">
-            {['MÚSICA ELETRÔNICA', 'OPEN GIN', 'BEIRA-MAR', 'NATUREZA'].map((tag) => (
+            {['MÚSICA ELETRÔNICA', 'OPEN GIN & VODKA KAWAII', 'BEIRA-MAR', 'NATUREZA'].map((tag) => (
               <span 
                 key={tag}
                 className="px-4 py-1.5 text-xs tracking-widest text-[#063E52] border border-[#063E52]/20 rounded-full font-bold uppercase"

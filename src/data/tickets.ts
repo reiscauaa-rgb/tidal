@@ -14,7 +14,7 @@ export const tickets: TicketTier[] = [
   {
     id: "lote-1",
     name: "1º Lote",
-    description: "Acesso geral + Open Gin incluso",
+    description: "Acesso geral + Open Gin & Vodka Kawaii (22:30 às 03:00)",
     price: 6000, 
     fee: 0,    // Sem taxa de serviço
     available: true,
@@ -24,7 +24,7 @@ export const tickets: TicketTier[] = [
   {
     id: "lote-2",
     name: "2º Lote",
-    description: "Acesso geral + Open Gin incluso",
+    description: "Acesso geral + Open Gin & Vodka Kawaii (22:30 às 03:00)",
     price: 8000, 
     fee: 0,
     available: false,
@@ -33,7 +33,7 @@ export const tickets: TicketTier[] = [
   {
     id: "lote-3",
     name: "3º Lote",
-    description: "Acesso geral + Open Gin incluso",
+    description: "Acesso geral + Open Gin & Vodka Kawaii (22:30 às 03:00)",
     price: 10000, 
     fee: 0,
     available: false,
