@@ -78,7 +78,7 @@ export default function ManifestSection() {
         {/* Top Text: "A MARÉ VIROU" */}
         <div 
           className="absolute top-[2vh] sm:top-[4vh] left-0 w-full z-10 flex flex-col items-center text-center px-4"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(4.5rem, 14vw, 10rem)", lineHeight: 1.1 }}
+          style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "clamp(4.5rem, 14vw, 10rem)", lineHeight: 1.1 }}
         >
           <span
             ref={addToRefs}
@@ -114,7 +114,7 @@ export default function ManifestSection() {
               ref={addToRefs}
               id="manifesto-title" 
               style={{ 
-                fontFamily: "Bebas Neue, sans-serif", 
+                fontFamily: "var(--font-display), sans-serif", 
                 fontSize: "clamp(2.5rem, 6vw, 4rem)", 
                 color: "#063E52", 
                 lineHeight: 1 
@@ -143,7 +143,7 @@ export default function ManifestSection() {
         {/* Top Text: "A MARÉ VIROU." */}
         <div 
           className="mb-8 flex flex-col items-center"
-          style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "clamp(5rem, 10vw, 8.5rem)", lineHeight: 0.95 }}
+          style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "clamp(5rem, 10vw, 8.5rem)", lineHeight: 0.95 }}
         >
           <span
             className="block pb-2"
@@ -180,7 +180,7 @@ export default function ManifestSection() {
           <h2 
             className="text-ocean-dark uppercase mb-6"
             style={{ 
-              fontFamily: "Bebas Neue, sans-serif", 
+              fontFamily: "var(--font-display), sans-serif", 
               fontSize: "clamp(2.5rem, 4vw, 3.8rem)", 
               letterSpacing: "0.02em",
               lineHeight: 1.05 

@@ -82,7 +82,7 @@ export default function ScrollOverlayContent({ progress }: ScrollOverlayContentP
       >
         <p
           style={{
-            fontFamily: "Bebas Neue, sans-serif",
+            fontFamily: "var(--font-display), sans-serif",
             fontSize: "clamp(1.4rem, 4.5vw, 2.4rem)",
             letterSpacing: "0.06em",
             color: "white",

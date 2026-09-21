@@ -16,13 +16,27 @@ export default function MobileMenu({ isOpen, onClose, navItems }: MobileMenuProp
 
   useEffect(() => {
     if (isOpen) {
+      // iOS Safari ignores overflow:hidden on body — use position:fixed instead.
+      // Save scroll position, lock body in place, restore on close.
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
       document.body.style.overflow = "hidden";
+
       const handleEscape = (e: KeyboardEvent) => {
         if (e.key === "Escape") onClose();
       };
       window.addEventListener("keydown", handleEscape);
+
       return () => {
+        // Restore body and scroll position
+        const savedY = Math.abs(parseInt(document.body.style.top || "0", 10));
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
         document.body.style.overflow = "";
+        window.scrollTo(0, savedY);
         window.removeEventListener("keydown", handleEscape);
       };
     }
@@ -67,7 +81,7 @@ export default function MobileMenu({ isOpen, onClose, navItems }: MobileMenuProp
             onClick={onClose}
             className="text-4xl uppercase text-ocean-dark hover:text-turquoise focus-visible:outline focus-visible:outline-2 focus-visible:outline-ocean-dark rounded p-1"
             style={{
-              fontFamily: "Bebas Neue, sans-serif",
+              fontFamily: "var(--font-display), sans-serif",
               letterSpacing: "0.05em",
               transform: isOpen ? "translateY(0)" : "translateY(20px)",
               opacity: isOpen ? 1 : 0,

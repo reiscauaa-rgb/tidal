@@ -51,13 +51,14 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-[transform,opacity,background-color,border-color,box-shadow] duration-700 ${
+        className={`fixed left-1/2 -translate-x-1/2 z-50 transition-[transform,opacity,background-color,border-color,box-shadow] duration-700 ${
           hidden || !heroRevealed ? "-translate-y-24 opacity-0 pointer-events-none" : "translate-y-0 opacity-100"
         } ${
           scrolled
             ? "bg-sand-light/90 backdrop-blur-md border border-ocean-dark/10 shadow-lg"
             : "bg-black/20 backdrop-blur-md border border-white/10"
         } rounded-full px-6 md:px-8 py-3 flex items-center gap-4 md:gap-8`}
+        style={{ top: "calc(1.5rem + env(safe-area-inset-top, 0px))" }}
         role="banner"
       >
         {/* Logo Minimized */}
@@ -95,26 +96,28 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Mobile hamburger */}
+        {/* Mobile hamburger — min 44x44px touch target (Apple HIG) */}
         <button
-          className="md:hidden flex flex-col justify-center items-center w-8 h-8 gap-[4px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-ocean-dark rounded"
+          className="md:hidden flex flex-col justify-center items-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-ocean-dark rounded"
+          style={{ minWidth: "44px", minHeight: "44px" }}
           onClick={() => setMenuOpen(true)}
           aria-label="Abrir menu de navegação"
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
         >
+          {/* Use margin-based spacing instead of gap — gap on flex is broken on Safari < 14.1 */}
           <span
             className={`block w-5 h-[2px] transition-[transform,opacity,background-color] duration-300 ${
               menuOpen ? "rotate-45 translate-y-[6px] bg-ocean-dark" : scrolled ? "bg-ocean-dark" : "bg-white"
             }`}
           />
           <span
-            className={`block w-5 h-[2px] transition-[transform,opacity,background-color] duration-300 ${
+            className={`block w-5 h-[2px] mt-[4px] transition-[transform,opacity,background-color] duration-300 ${
               menuOpen ? "opacity-0 bg-ocean-dark" : scrolled ? "bg-ocean-dark" : "bg-white"
             }`}
           />
           <span
-            className={`block w-5 h-[2px] transition-[transform,opacity,background-color] duration-300 ${
+            className={`block w-5 h-[2px] mt-[4px] transition-[transform,opacity,background-color] duration-300 ${
               menuOpen ? "-rotate-45 -translate-y-[6px] bg-ocean-dark" : scrolled ? "bg-ocean-dark" : "bg-white"
             }`}
           />

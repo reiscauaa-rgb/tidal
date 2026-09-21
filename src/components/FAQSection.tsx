@@ -42,7 +42,7 @@ function FAQItem({ item, index }: { item: (typeof faq)[0]; index: number }) {
         aria-labelledby={`faq-btn-${item.id}`}
         className="overflow-hidden transition-[max-height,opacity] duration-400 ease-in-out"
         style={{
-          maxHeight: open ? "400px" : "0",
+          maxHeight: open ? "2000px" : "0",
           opacity: open ? 1 : 0,
         }}
       >
@@ -81,7 +81,7 @@ export default function FAQSection() {
           id="faq-title"
           className="mb-10 md:mb-14"
           style={{
-            fontFamily: "Bebas Neue, sans-serif",
+            fontFamily: "var(--font-display), sans-serif",
             fontSize: "clamp(3rem, 10vw, 6rem)",
             letterSpacing: "0.03em",
             color: "#063E52",

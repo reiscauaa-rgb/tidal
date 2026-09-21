@@ -58,7 +58,7 @@ export default function TicketsSection() {
           {/* Card de ingressos */}
           <div
             className="w-full max-w-lg flex flex-col gap-6 p-6 sm:p-8 md:p-10 border border-ocean-dark/10 shadow-xl rounded-md"
-            style={{ background: "rgba(255, 255, 255, 0.65)", backdropFilter: "blur(8px)" }}
+            style={{ background: "rgba(255, 255, 255, 0.65)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}
           >
             {/* Infos */}
             <div className="flex flex-col gap-4">
@@ -135,7 +135,7 @@ export default function TicketsSection() {
           />
 
           {/* Modal Container sem fundo azul */}
-          <div className="relative z-10 w-full max-w-sm max-h-[90dvh] flex flex-col gap-3">
+          <div className="relative z-10 w-full max-w-sm flex flex-col gap-3" style={{ maxHeight: "90vh" }}>
             
             {/* Botão fechar */}
             <div className="flex justify-end shrink-0">

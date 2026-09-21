@@ -72,9 +72,26 @@ export default function CharacterSection() {
     const section = sectionRef.current;
     if (!strip || !section) return;
 
-    const loopWidth = strip.scrollWidth / 3;
-    offsetRef.current = -loopWidth;
+    // loopWidthRef is used instead of a local variable so ResizeObserver
+    // can update it without restarting the RAF loop.
+    const loopWidthRef = { current: strip.scrollWidth / 3 };
+    offsetRef.current = -loopWidthRef.current;
     lastTsRef.current = performance.now();
+
+    // Recalculate loop width when the strip resizes (e.g. device rotation).
+    // Cards use clamp(260px, 72vw, 320px) so width changes on orientation change.
+    const resizeObserver = new ResizeObserver(() => {
+      const newWidth = strip.scrollWidth / 3;
+      if (newWidth !== loopWidthRef.current) {
+        // Rebase offset proportionally so there's no jump
+        const ratio = newWidth / loopWidthRef.current;
+        loopWidthRef.current = newWidth;
+        offsetRef.current = offsetRef.current * ratio;
+        if (offsetRef.current >= 0) offsetRef.current -= newWidth;
+        if (offsetRef.current < -newWidth * 2) offsetRef.current += newWidth;
+      }
+    });
+    resizeObserver.observe(strip);
 
     // Pause RAF when section is not visible
     const visibilityObserver = new IntersectionObserver(
@@ -100,7 +117,7 @@ export default function CharacterSection() {
 
       if (!isDragging.current) {
         offsetRef.current += SPEED * (dt / 1000);
-        if (offsetRef.current >= 0) offsetRef.current -= loopWidth;
+        if (offsetRef.current >= 0) offsetRef.current -= loopWidthRef.current;
       }
 
       strip.style.transform = `translateX(${offsetRef.current}px)`;
@@ -121,8 +138,8 @@ export default function CharacterSection() {
       const delta = e.clientX - lastPointerX.current;
       lastPointerX.current = e.clientX;
       offsetRef.current += delta;
-      if (offsetRef.current >= 0) offsetRef.current -= loopWidth;
-      if (offsetRef.current < -loopWidth * 2) offsetRef.current += loopWidth;
+      if (offsetRef.current >= 0) offsetRef.current -= loopWidthRef.current;
+      if (offsetRef.current < -loopWidthRef.current * 2) offsetRef.current += loopWidthRef.current;
     };
 
     const onPointerUp = () => {
@@ -139,6 +156,7 @@ export default function CharacterSection() {
 
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      resizeObserver.disconnect();
       visibilityObserver.disconnect();
       strip.removeEventListener("pointerdown", onPointerDown);
       strip.removeEventListener("pointermove", onPointerMove);
@@ -183,7 +201,7 @@ export default function CharacterSection() {
         </p>
         <h2
           style={{
-            fontFamily: "Bebas Neue, sans-serif",
+            fontFamily: "var(--font-display), sans-serif",
             fontSize: "clamp(3.5rem, 9vw, 7rem)",
             letterSpacing: "0.02em",
             color: "#ffffff",
@@ -235,7 +253,12 @@ export default function CharacterSection() {
           <div
             ref={stripRef}
             className="flex gap-[2px] will-change-transform"
-            style={{ width: "max-content" }}
+            style={{
+              width: "max-content",
+              touchAction: "pan-y",       // allow vertical scroll, capture only horizontal drag
+              WebkitUserSelect: "none",   // prevent accidental text/image selection on iOS
+              userSelect: "none",
+            }}
           >
             {marqueeImages.map((img, i) => (
               <div

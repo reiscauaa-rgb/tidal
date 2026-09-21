@@ -50,12 +50,16 @@ export default function HeroSection() {
   const [progress, setProgress] = useState(0);
   const [videoEnded, setVideoEnded] = useState(false);
   const lastTouchY = useRef<number | null>(null);
+  const progressRef = useRef(0);
+  const firstInteractionTimeRef = useRef<number | null>(null);
 
   // Força o scroll para o topo sempre que o site é carregado
   useEffect(() => {
     if (typeof window !== "undefined") {
       window.history.scrollRestoration = "manual";
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      // behavior:'instant' not supported on Safari < 16 — use direct assignment
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
     }
   }, []);
 
@@ -73,6 +77,7 @@ export default function HeroSection() {
   }, []);
 
   const handleProgressChange = useCallback((p: number) => {
+    progressRef.current = p;
     setProgress(p);
     if (typeof window !== "undefined") {
       window.dispatchEvent(new CustomEvent("heroProgress", { detail: p }));
@@ -87,9 +92,13 @@ export default function HeroSection() {
     } else {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
-      // Ensure scroll position is at 0 when unlocking
-      // so user doesn't land halfway down the page
-      window.scrollTo(0, 0);
+      // Use direct scrollTop assignment — behavior:'instant' is not supported
+      // on iOS Safari < 16 and causes smooth scroll jank during hero unlock.
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      // Recalibrate all ScrollTrigger positions now that overflow is restored.
+      // Without this, GSAP trigger offsets are calculated from the locked state.
+      ScrollTrigger.refresh();
     }
     return () => {
       document.body.style.overflow = "";
@@ -102,6 +111,9 @@ export default function HeroSection() {
   // This prevents the re-registration race condition that causes the scroll freeze.
   useEffect(() => {
     const handleForwardInteraction = () => {
+      if (!firstInteractionTimeRef.current) {
+        firstInteractionTimeRef.current = Date.now();
+      }
       if (!videoEndedRef.current && !videoRef.current?.isPlaying()) {
         videoRef.current?.playForward();
       }
@@ -211,6 +223,9 @@ export default function HeroSection() {
 
     window.addEventListener("wheel", onWheel, { passive: false });
     window.addEventListener("touchstart", onTouchStart, { passive: true });
+    // Non-passive touchmove — needed to call preventDefault() while video is active.
+    // Once the video ends, videoEndedRef prevents preventDefault from firing,
+    // so subsequent scrolls on the rest of the page are never blocked.
     window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
     window.addEventListener("keydown", onKeyDown);
@@ -225,6 +240,31 @@ export default function HeroSection() {
       window.removeEventListener("click", handleForwardInteraction);
     };
     // Empty deps: register ONCE. State is read via videoEndedRef (ref, not state).
+  }, []);
+
+  // ── Safety valve — force-unlock if the video is stuck ────────────────
+  // On some older/slower devices the video may fail to load or play,
+  // leaving the page permanently locked (overflow: hidden + preventDefault).
+  // After the user's first interaction, if the video makes zero progress
+  // within a few seconds we force-unlock so they can browse the site.
+  useEffect(() => {
+    const STUCK_THRESHOLD_MS = 5000;
+
+    const safetyCheck = setInterval(() => {
+      if (
+        firstInteractionTimeRef.current &&
+        !videoEndedRef.current &&
+        progressRef.current < 0.01 &&
+        Date.now() - firstInteractionTimeRef.current > STUCK_THRESHOLD_MS
+      ) {
+        // Video is stuck — force unlock the page
+        videoEndedRef.current = true;
+        setVideoEnded(true);
+        clearInterval(safetyCheck);
+      }
+    }, 1000);
+
+    return () => clearInterval(safetyCheck);
   }, []);
 
   return (
