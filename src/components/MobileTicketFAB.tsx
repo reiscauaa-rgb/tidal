@@ -64,7 +64,7 @@ export default function MobileTicketFAB() {
           fontFamily: "Inter, sans-serif",
           boxShadow: "0 4px 20px rgba(48, 55, 28, 0.4)",
         }}
-        aria-label="Comprar ingresso para o TIDAL FEST"
+        aria-label="Comprar ingresso para o AFTER TIDAL"
       >
         <Ticket size={16} aria-hidden="true" />
         INGRESSOS

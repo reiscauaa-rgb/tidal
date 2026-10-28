@@ -5,16 +5,20 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { photos } from "@/data/media";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
 }
 
-const images = [
+// Fotos reais da Tidal Fest vêm de src/data/media.ts (lista `photos`).
+// Enquanto não houver fotos cadastradas, usa as imagens de referência antigas como placeholder.
+const placeholderImages = [
   { src: "/images/tidal-insp-1.jpg", alt: "Sunset Vibes" },
   { src: "/images/tidal-insp-2.jpg", alt: "Red Room" },
   { src: "/images/tidal-insp-3.jpg", alt: "Tidal Fest" },
 ];
+const images = photos.length ? photos.map((p) => ({ src: p.src, alt: p.alt })) : placeholderImages;
 
 const marqueeImages = [...images, ...images, ...images];
 const SPEED = 48;
@@ -168,10 +172,10 @@ export default function CharacterSection() {
   return (
     <section
       ref={sectionRef}
-      id="inspiracoes"
+      id="como-e-a-tidal"
       className="relative section-padding overflow-hidden"
       style={{ background: "#F4E8D1" }}
-      aria-label="Nossas Inspiracoes"
+      aria-label="Como é a Tidal"
     >
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none"
@@ -197,7 +201,7 @@ export default function CharacterSection() {
           className="text-white/70 text-xs tracking-[0.45em] uppercase mb-5 font-bold"
           style={{ fontFamily: "Inter, sans-serif" }}
         >
-          NOSSAS INSPIRAÇÕES
+          TIDAL FEST
         </p>
         <h2
           style={{
@@ -209,18 +213,18 @@ export default function CharacterSection() {
             marginBottom: "1.5rem",
           }}
         >
-          {"A ENERGIA "}
+          {"COMO É "}
           <span style={{ color: "transparent", WebkitTextStroke: "2px rgba(255,255,255,0.8)" }}>
-            DO AGORA.
+            A TIDAL.
           </span>
         </h2>
         <p
           className="text-white/80 text-base leading-relaxed max-w-lg mx-auto"
           style={{ fontFamily: "Inter, sans-serif" }}
         >
-          A Tidal Fest nasceu da vontade de unir a imensidão da natureza com a energia
-          indomável da música eletrônica. Do palco às luzes neon, cada detalhe reflete
-          o pôr do sol e as marés.
+          Pé na areia, mar de fundo e música eletrônica do pôr do sol ao amanhecer.
+          Essas são fotos de onde a Tidal Fest aconteceu de verdade. O After Tidal traz
+          a mesma pegada, no mesmo cenário, em uma versão mais exclusiva.
         </p>
       </div>
 

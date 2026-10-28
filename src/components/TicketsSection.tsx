@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ShieldCheck, Ticket, Wine, X } from "lucide-react";
+import { Package, ShieldCheck, Ticket, X } from "lucide-react";
 
 const SYMPLA_URL = "https://www.sympla.com.br/evento/tidal-fest/3526727";
 
@@ -16,14 +16,14 @@ export default function TicketsSection() {
       const w = window as unknown as { fbq?: (...args: unknown[]) => void; gtag?: (...args: unknown[]) => void };
       if (typeof w.fbq === "function") {
         w.fbq("track", "AddToCart", {
-          content_name: "Ingresso Tidal Fest",
+          content_name: "Ingresso After Tidal",
           content_category: "Ingressos",
           currency: "BRL",
         });
       }
       if (typeof w.gtag === "function") {
         w.gtag("event", "add_to_cart", {
-          items: [{ item_name: "Ingresso Tidal Fest" }],
+          items: [{ item_name: "Ingresso After Tidal" }],
         });
       }
     }
@@ -44,13 +44,13 @@ export default function TicketsSection() {
           {/* Personagem com o ingresso */}
           <div className="w-full flex justify-center">
             <Image
-              src="/images/ticket-character.png"
-              alt="Personagem Tidal segurando ingresso"
-              width={400}
-              height={420}
+              src="/images/after-tickets.jpg"
+              alt="Pulseiras Comum e VIP do After Tidal"
+              width={896}
+              height={1200}
               quality={75}
               loading="lazy"
-              className="w-auto h-[240px] sm:h-[320px] md:h-[420px] object-contain object-bottom"
+              className="w-full max-w-sm h-auto rounded-2xl mb-6 shadow-xl"
               style={{ display: "block" }}
             />
           </div>
@@ -75,13 +75,13 @@ export default function TicketsSection() {
               </div>
 
               <div className="flex items-start gap-4 p-4 border border-ocean-dark/10 rounded-sm">
-                <Wine size={20} className="text-turquoise shrink-0 mt-0.5" />
+                <Package size={20} className="text-turquoise shrink-0 mt-0.5" />
                 <div>
                   <p className="text-ocean-dark font-bold text-sm uppercase tracking-widest" style={{ fontFamily: "Inter, sans-serif" }}>
-                    Open Gin & Open Vodka Kawaii
+                    Open Cooler
                   </p>
                   <p className="text-ocean-dark/70 text-xs mt-1 font-semibold" style={{ fontFamily: "Inter, sans-serif" }}>
-                    Das 22:30 às 03:00 — incluso em todos os ingressos sem custo adicional
+                    Traga seu cooler. Bar de reposição com gelo, energético e outras opções
                   </p>
                 </div>
               </div>
@@ -90,10 +90,10 @@ export default function TicketsSection() {
                 <Ticket size={20} className="text-turquoise shrink-0 mt-0.5" />
                 <div>
                   <p className="text-ocean-dark font-bold text-sm uppercase tracking-widest" style={{ fontFamily: "Inter, sans-serif" }}>
-                    Ingressos por lote
+                    Comum ou VIP
                   </p>
                   <p className="text-ocean-dark/60 text-xs mt-1 font-medium" style={{ fontFamily: "Inter, sans-serif" }}>
-                    Quanto antes você garantir, menor o preço. Não perca a virada!
+                    Pulseira preta (Comum) ou branca (VIP). Ingressos limitados, sem virada de lote.
                   </p>
                 </div>
               </div>
@@ -159,8 +159,8 @@ export default function TicketsSection() {
               </div>
 
               <Image
-                src="/images/comunicado.jpg"
-                alt="Comunicado importante — Regras do Open"
+                src="/images/after-comunicado.jpg"
+                alt="Comunicado importante — Regras do Open Cooler"
                 width={600}
                 height={800}
                 quality={80}

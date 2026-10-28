@@ -3,46 +3,39 @@ export interface TicketTier {
   id: string;
   name: string;
   description: string;
-  price: number; // in BRL cents (e.g. 8000 = R$80,00)
+  price: number | null; // in BRL cents (e.g. 8000 = R$80,00). null = a definir
   fee: number; // service fee in BRL cents
   available: boolean;
   quantity: number; // remaining tickets
   badge?: string;
 }
 
+// After Tidal: apenas 2 tipos de ingresso, sem virada de lote.
 export const tickets: TicketTier[] = [
   {
-    id: "lote-1",
-    name: "1º Lote",
-    description: "Acesso geral + Open Gin & Vodka Kawaii (22:30 às 03:00)",
-    price: 6000, 
-    fee: 0,    // Sem taxa de serviço
+    id: "comum",
+    name: "Comum",
+    description: "Acesso ao After Tidal + Open Cooler (traga seu cooler)",
+    price: null, // TODO: definir valor
+    fee: 0,
     available: true,
-    quantity: 50,
-    badge: "Lote Atual",
+    quantity: 0,
+    badge: "Pulseira preta",
   },
   {
-    id: "lote-2",
-    name: "2º Lote",
-    description: "Acesso geral + Open Gin & Vodka Kawaii (22:30 às 03:00)",
-    price: 8000, 
+    id: "vip",
+    name: "VIP",
+    description: "Acesso ao After Tidal + Open Cooler + benefícios VIP (a definir)",
+    price: null, // TODO: definir valor e benefícios
     fee: 0,
-    available: false,
+    available: true,
     quantity: 0,
-  },
-  {
-    id: "lote-3",
-    name: "3º Lote",
-    description: "Acesso geral + Open Gin & Vodka Kawaii (22:30 às 03:00)",
-    price: 10000, 
-    fee: 0,
-    available: false,
-    quantity: 0,
+    badge: "Pulseira branca",
   },
 ];
 
 export const scarcityMessages = [
-  "Lote sujeito a alteração sem aviso prévio",
   "Ingressos limitados",
-  "Garanta sua entrada antes da próxima virada de lote",
+  "Sem virada de lote",
+  "Evento exclusivo para maiores de 18 anos",
 ];

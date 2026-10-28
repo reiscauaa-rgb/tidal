@@ -9,40 +9,5 @@ export interface Artist {
   isHeadliner?: boolean;
 }
 
-export const lineup: Artist[] = [
-  {
-    id: "gutz",
-    slot: "OPENING",
-    name: "GUTZ",
-    startTime: "22:20",
-    endTime: "00:00",
-  },
-  {
-    id: "kawave",
-    slot: "SET 02",
-    name: "KAWAVE",
-    startTime: "00:00",
-    endTime: "01:45",
-  },
-  {
-    id: "dad",
-    slot: "SET 03",
-    name: "DAD",
-    startTime: "01:45",
-    endTime: "03:30",
-  },
-  {
-    id: "dantas",
-    slot: "SET 04",
-    name: "DANTAS",
-    startTime: "03:30",
-    endTime: "05:15",
-  },
-  {
-    id: "aryus",
-    slot: "SPECIAL SUNRISE SET",
-    name: "ARYUS",
-    startTime: "05:15",
-    endTime: "07:00",
-  },
-];
+// After Tidal: DJs ainda não definidos.
+export const lineup: Artist[] = [];

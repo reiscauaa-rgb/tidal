@@ -79,8 +79,9 @@ export default function Footer() {
             </h3>
             <nav aria-label="Links do rodapé" className="flex flex-col gap-3">
               {[
-                { label: "A Experiência", href: "#experiencia" },
+                { label: "Open Cooler", href: "#open-cooler" },
                 { label: "Line-up", href: "#lineup" },
+                { label: "A Festa", href: "#como-e-a-tidal" },
                 { label: "Local", href: "#local" },
                 { label: "Ingressos", href: "#ingressos" },
                 { label: "FAQ", href: "#faq" },

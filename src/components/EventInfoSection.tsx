@@ -118,14 +118,14 @@ export default function EventInfoSection() {
               className="text-[#063E52] leading-none"
               style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "18.5cqi" }}
             >
-              10
+              12
             </span>
             <div className="flex flex-col justify-center pb-[0.5cqi]">
               <span
                 className="text-[#063E52] font-black leading-none"
                 style={{ fontFamily: "Bebas Neue, sans-serif", fontSize: "8.5cqi" }}
               >
-                OUTUBRO
+                DEZEMBRO
               </span>
               <span
                 className="text-[#13BBC4] font-bold tracking-widest leading-none mt-[0.8cqi]"
@@ -152,7 +152,7 @@ export default function EventInfoSection() {
                 className="text-[#063E52] font-bold leading-none mt-[0.5cqi]"
                 style={{ fontFamily: "Inter, sans-serif", fontSize: "7.5cqi" }}
               >
-                22:30
+                22:00
               </span>
             </div>
             <div className="flex flex-col pl-[2cqi]">
@@ -175,7 +175,7 @@ export default function EventInfoSection() {
                 className="text-[#063E52]/90 font-medium leading-tight"
                 style={{ fontFamily: "Inter, sans-serif", fontSize: "1.9cqi" }}
               >
-                Festa até o<br />amanhecer do dia 11.
+                Festa até as 06:00<br />do dia 13.
               </span>
             </div>
           </div>
@@ -226,7 +226,7 @@ export default function EventInfoSection() {
             >
               PRAIA DO
               <br />
-              PARQUE TURÍSTICO
+              COSTÃO
             </h3>
             <p
               className="text-[#13BBC4] font-semibold mt-[0.5cqi]"
@@ -302,11 +302,11 @@ export default function EventInfoSection() {
 
               <div className="flex items-baseline gap-4 mb-6">
                 <span className="text-[#063E52] font-display text-8xl leading-none">
-                  10
+                  12
                 </span>
                 <div className="flex flex-col">
                   <span className="text-[#063E52] font-display text-4xl leading-none">
-                    OUTUBRO
+                    DEZEMBRO
                   </span>
                   <span className="text-[#13BBC4] font-bold tracking-widest text-xs uppercase mt-1" style={{ fontFamily: "Inter, sans-serif" }}>
                     SÁBADO • 2026
@@ -320,11 +320,11 @@ export default function EventInfoSection() {
                     Início a partir das
                   </span>
                   <span className="text-[#063E52] font-display text-4xl">
-                    22:30
+                    22:00
                   </span>
                 </div>
                 <p className="text-[#063E52]/80 text-sm font-medium text-right max-w-[180px]" style={{ fontFamily: "Inter, sans-serif" }}>
-                  Festa até o amanhecer do dia 11.
+                  Festa até as 06:00 do dia 13.
                 </p>
               </div>
             </div>
@@ -356,7 +356,7 @@ export default function EventInfoSection() {
 
               <div className="mb-6">
                 <h3 className="text-white font-display text-5xl lg:text-6xl leading-tight mb-2">
-                  PRAIA DO<br />PARQUE TURÍSTICO
+                  PRAIA DO<br />COSTÃO
                 </h3>
                 <p className="text-[#13BBC4] font-bold text-sm tracking-wider uppercase" style={{ fontFamily: "Inter, sans-serif" }}>
                   {event.city}

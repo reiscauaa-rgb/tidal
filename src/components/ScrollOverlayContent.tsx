@@ -23,7 +23,7 @@ export default function ScrollOverlayContent({ progress }: ScrollOverlayContentP
   /**
    * Video progress phases:
    *  0–20%  : nothing (just video)
-   *  20–80% : "A MARÉ ESTÁ MUDANDO" slowly fades in and out
+   *  20–80% : "A MARÉ NÃO PAROU" slowly fades in and out
    *  98–100%: Logo, Event info, CTA button appear at the very end
    */
 
@@ -36,7 +36,7 @@ export default function ScrollOverlayContent({ progress }: ScrollOverlayContentP
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-end pb-20 md:pb-24 px-6 pointer-events-none">
 
-      {/* TIDAL FEST logo — emerges at the very end */}
+      {/* AFTER PARTY / TIDAL FEST logo — emerges at the very end */}
       <div
         className="absolute"
         style={{
@@ -44,22 +44,22 @@ export default function ScrollOverlayContent({ progress }: ScrollOverlayContentP
           transform: `translate(-50%, calc(-50% + ${finalY}px))`,
           left: "50%",
           opacity: finalOpacity,
-          width: "min(360px, 75vw)",
+          width: "min(480px, 82vw)",
           textAlign: "center",
         }}
         aria-hidden={finalOpacity < 0.05}
       >
         <Image
-          src="/images/logo.svg"
-          alt="TIDAL FEST"
-          width={360}
-          height={80}
+          src="/images/logo-after.png"
+          alt="AFTER PARTY — TIDAL FEST"
+          width={1000}
+          height={405}
           priority
           style={{
             width: "100%",
             height: "auto",
-            filter: "drop-shadow(0 4px 24px rgba(0,0,0,0.6)) brightness(10)",
-            // brightness(10) makes the SVG appear white — works as a light overlay on dark video
+            filter: "drop-shadow(0 4px 24px rgba(0,0,0,0.6))",
+            // Logo PNG original (texto branco + placa de madeira): sem filtros de cor para não alterar as cores.
           }}
         />
       </div>
@@ -89,7 +89,7 @@ export default function ScrollOverlayContent({ progress }: ScrollOverlayContentP
             textShadow: "0 2px 16px rgba(0,0,0,0.8)",
           }}
         >
-          {event.date} · {event.time}
+          {event.date} · {event.time} ÀS {event.endTime}
         </p>
         <p
           style={{
@@ -133,7 +133,7 @@ export default function ScrollOverlayContent({ progress }: ScrollOverlayContentP
             minHeight: "52px",
             textDecoration: "none",
           }}
-          aria-label="Garantir meu ingresso para o TIDAL FEST"
+          aria-label="Garantir meu ingresso para o AFTER TIDAL"
         >
           GARANTIR MEU INGRESSO
         </a>

@@ -6,8 +6,9 @@ import MobileMenu from "./MobileMenu";
 import Image from "next/image";
 
 const navItems = [
-  { label: "Experiência", href: "#experiencia" },
+  { label: "Open Cooler", href: "#open-cooler" },
   { label: "Line-up", href: "#lineup" },
+  { label: "A Festa", href: "#como-e-a-tidal" },
   { label: "Local", href: "#local" },
   { label: "Ingressos", href: "#ingressos" },
   { label: "FAQ", href: "#faq" },

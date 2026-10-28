@@ -1,24 +1,27 @@
-import Image from "next/image";
-
 export default function LineupSection() {
   return (
     <section
       id="lineup"
-      className="relative w-full py-12 sm:py-16 md:py-24 px-4 sm:px-6 flex justify-center items-center overflow-hidden"
+      className="relative w-full py-16 sm:py-20 md:py-28 px-4 sm:px-6 flex justify-center items-center overflow-hidden"
       style={{ background: "#F4E8D1", zIndex: 10 }}
-      aria-label="Line-up Oficial Tidal Fest"
+      aria-label="Line-up After Tidal"
     >
-      <div className="relative w-full max-w-lg md:max-w-xl lg:max-w-2xl flex justify-center items-center">
-        <Image
-          src="/images/lineup-poster.jpg"
-          alt="Line-up Oficial Tidal Fest — Gütz, Kawave, DAC, Dantas, Aryus"
-          width={818}
-          height={1024}
-          quality={85}
-          loading="lazy"
-          className="w-full h-auto object-contain rounded-2xl shadow-[0_15px_45px_rgba(6,62,82,0.18)]"
-          sizes="(max-width: 640px) 92vw, (max-width: 1024px) 70vw, 680px"
-        />
+      <div className="text-center flex flex-col items-center gap-4">
+        <p
+          className="text-[#13BBC4] font-bold tracking-[0.3em] uppercase text-xs"
+          style={{ fontFamily: "Inter, sans-serif" }}
+        >
+          Música eletrônica
+        </p>
+        <h2
+          className="text-[#063E52] uppercase leading-none"
+          style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "clamp(3rem, 9vw, 6rem)" }}
+        >
+          Line-up em breve
+        </h2>
+        <p className="text-[#063E52]/70 font-medium max-w-md" style={{ fontFamily: "Inter, sans-serif" }}>
+          Estamos fechando os DJs do After Tidal. Fique de olho no nosso Instagram.
+        </p>
       </div>
     </section>
   );

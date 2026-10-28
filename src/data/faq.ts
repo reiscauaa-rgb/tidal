@@ -7,16 +7,28 @@ export interface FAQItem {
 
 export const faq: FAQItem[] = [
   {
+    id: "opencooler",
+    question: "Como funciona o Open Cooler?",
+    answer:
+      "Cada pessoa pode trazer o seu próprio cooler com as suas bebidas. Dentro do evento teremos um bar de reposição com gelo, energético e outras opções para você repor o seu cooler durante a noite.",
+  },
+  {
     id: "age",
     question: "Qual é a classificação etária?",
     answer:
-      "O Tidal Fest é um evento com formato Open Bar (Open Gin e Open Vodka Kawaii das 22:30 às 03:00). Por isso, a classificação etária é estritamente para maiores de 18 anos. É obrigatória a apresentação de documento de identidade original com foto na entrada.",
+      "O After Tidal é exclusivo para maiores de 18 anos. É obrigatória a apresentação de documento de identidade original com foto na entrada.",
+  },
+  {
+    id: "tickets",
+    question: "Qual a diferença entre o ingresso Comum e o VIP?",
+    answer:
+      "Os ingressos são identificados por pulseiras: preta (Comum) e branca (VIP). Os ingressos são limitados e não haverá virada de lote. Os detalhes dos benefícios de cada tipo serão divulgados em breve.",
   },
   {
     id: "rain",
     question: "O evento acontece em caso de chuva?",
     answer:
-      "Sim! O festival acontecerá independentemente das condições climáticas. Nossa estrutura é pensada para garantir o conforto de todos, faça chuva ou faça sol.",
+      "Sim! O evento acontecerá independentemente das condições climáticas.",
   },
   {
     id: "reentry",
@@ -28,13 +40,13 @@ export const faq: FAQItem[] = [
     id: "items",
     question: "O que posso levar?",
     answer:
-      "É permitido: documentos, celular, carregador portátil, óculos de sol, protetor solar e capa de chuva. É estritamente proibido: garrafas, bebidas, alimentos, objetos cortantes ou pontiagudos, guarda-chuvas, drogas ilícitas e itens que representem risco à segurança.",
+      "Você pode levar o seu cooler com as suas bebidas, além de documentos, celular, carregador portátil, óculos de sol e protetor solar. As regras detalhadas do cooler (como tamanho e itens permitidos) serão divulgadas em breve. É estritamente proibido: objetos cortantes ou pontiagudos, drogas ilícitas e itens que representem risco à segurança.",
   },
   {
     id: "parking",
     question: "Haverá estacionamento?",
     answer:
-      "Não. O evento não possui estacionamento. Recomendamos fortemente o uso de aplicativos de transporte para que você possa curtir o evento (e o nosso Open Gin & Vodka Kawaii) com total tranquilidade e responsabilidade.",
+      "Informações sobre estacionamento serão divulgadas em breve. Recomendamos fortemente o uso de aplicativos de transporte para que você possa curtir o evento com total tranquilidade e responsabilidade.",
   },
   {
     id: "accessibility",

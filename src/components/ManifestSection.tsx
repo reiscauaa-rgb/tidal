@@ -100,7 +100,7 @@ export default function ManifestSection() {
               filter: "drop-shadow(0px 6px 12px rgba(0,0,0,0.6))"
             }}
           >
-            VIROU.
+            NÃO PAROU.
           </span>
         </div>
 
@@ -120,7 +120,7 @@ export default function ManifestSection() {
                 lineHeight: 1 
               }}
             >
-              Uma nova experiência <br/> à beira-mar
+              O after chegou <br/> à beira-mar
             </h2>
             
             <p 
@@ -132,7 +132,7 @@ export default function ManifestSection() {
               }}
               className="font-medium leading-relaxed max-w-md px-2"
             >
-              Música, luzes e energia da praia se encontram em uma noite feita para sentir, dançar e viver até o amanhecer.
+              Menos gente, mais exclusividade e a mesma energia da Tidal Fest. Uma noite na Praia do Costão pensada para quem pediu um AFTER.
             </p>
           </div>
         </div>
@@ -140,7 +140,7 @@ export default function ManifestSection() {
 
       {/* ─── DESKTOP VERSION (md+): Fundo normal limpo, sem imagem esticada/cortada ─── */}
       <div className="hidden md:flex relative z-10 flex-col items-center justify-center min-h-screen px-8 py-24 max-w-6xl mx-auto text-center">
-        {/* Top Text: "A MARÉ VIROU." */}
+        {/* Top Text: "A MARÉ NÃO PAROU." */}
         <div 
           className="mb-8 flex flex-col items-center"
           style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "clamp(5rem, 10vw, 8.5rem)", lineHeight: 0.95 }}
@@ -161,7 +161,7 @@ export default function ManifestSection() {
               WebkitTextStroke: "2px #063E52",
             }}
           >
-            VIROU.
+            NÃO PAROU.
           </span>
         </div>
 
@@ -186,18 +186,18 @@ export default function ManifestSection() {
               lineHeight: 1.05 
             }}
           >
-            Uma nova experiência à beira-mar
+            O after chegou à beira-mar
           </h2>
           
           <p 
             className="text-ocean-dark/80 text-lg lg:text-xl font-medium leading-relaxed mb-8 max-w-2xl mx-auto"
             style={{ fontFamily: "Inter, sans-serif" }}
           >
-            Música, luzes e energia da praia se encontram em uma noite feita para sentir, dançar e viver até o amanhecer.
+            Menos gente, mais exclusividade e a mesma energia da Tidal Fest. Uma noite na Praia do Costão pensada para quem pediu um AFTER.
           </p>
 
           <div className="flex flex-wrap justify-center gap-3">
-            {['MÚSICA ELETRÔNICA', 'OPEN GIN & VODKA KAWAII', 'BEIRA-MAR', 'NATUREZA'].map((tag) => (
+            {['MÚSICA ELETRÔNICA', 'OPEN COOLER', 'BEIRA-MAR', 'NATUREZA'].map((tag) => (
               <span 
                 key={tag}
                 className="px-4 py-1.5 text-xs tracking-widest text-[#063E52] border border-[#063E52]/20 rounded-full font-bold uppercase"

@@ -17,7 +17,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Tidal Fest",
+  title: "After Tidal — Open Cooler",
   description: event.description,
   metadataBase: new URL(event.siteUrl),
   icons: {
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     apple: "/apple-icon.png?v=2",
   },
   openGraph: {
-    title: "Tidal Fest",
+    title: "After Tidal — Open Cooler",
     description: event.description,
     url: event.siteUrl,
     siteName: "Tidal Fest",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
         url: event.ogImage,
         width: 1200,
         height: 630,
-        alt: "Tidal Fest",
+        alt: "After Tidal — Open Cooler",
       },
     ],
     locale: "pt_BR",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tidal Fest",
+    title: "After Tidal — Open Cooler",
     description: event.description,
     images: [event.ogImage],
   },
@@ -56,7 +56,8 @@ export const metadata: Metadata = {
       "@context": "https://schema.org",
       "@type": "Event",
       name: event.name,
-      startDate: "2025-10-10T22:30:00-03:00", // PLACEHOLDER — update with actual year
+      endDate: "2026-12-13T06:00:00-03:00",
+      startDate: "2026-12-12T22:00:00-03:00",
       location: {
         "@type": "Place",
         name: event.venue,

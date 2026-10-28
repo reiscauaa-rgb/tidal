@@ -88,7 +88,7 @@ export default function FinalCTA() {
           className="text-deep-brown/80 text-xs tracking-[0.4em] uppercase mb-8 font-bold"
           style={{ fontFamily: "Inter, sans-serif" }}
         >
-          10 OUT · PERUÍBE-SP · 22:30H
+          12 DEZ · PRAIA DO COSTÃO · PERUÍBE-SP · 22H ÀS 6H
         </p>
 
         <h2
@@ -105,7 +105,7 @@ export default function FinalCTA() {
             transition: "opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         >
-          <span style={{ color: "#FDF6E9" }}>O AMANHECER</span>
+          <span style={{ color: "#FDF6E9" }}>A MARÉ</span>
           <br />
           <span
             style={{
@@ -113,10 +113,10 @@ export default function FinalCTA() {
               WebkitTextStroke: "2px #4A2B29",
             }}
           >
-            VAI ENCONTRAR
+            NÃO PAROU,
           </span>
           <br />
-          <span style={{ color: "#4A2B29" }}>VOCÊ AQUI.</span>
+          <span style={{ color: "#4A2B29" }}>TRAGA SEU COOLER.</span>
         </h2>
 
         <p
@@ -129,7 +129,7 @@ export default function FinalCTA() {
             transition: "opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         >
-          A maré já começou a subir.
+          A próxima onda está chegando. Ingressos limitados, sem virada de lote.
         </p>
 
         <a
@@ -145,7 +145,7 @@ export default function FinalCTA() {
             transition:
               "opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
-          aria-label="Garantir ingresso para o TIDAL FEST"
+          aria-label="Garantir ingresso para o AFTER TIDAL"
         >
           GARANTIR MEU INGRESSO
         </a>

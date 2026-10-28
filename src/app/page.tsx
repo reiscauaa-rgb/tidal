@@ -3,6 +3,8 @@ import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import ManifestSection from "@/components/ManifestSection";
 import CharacterSection from "@/components/CharacterSection";
+import OpenCoolerSection from "@/components/OpenCoolerSection";
+import TidalMediaSection from "@/components/TidalMediaSection";
 import LineupSection from "@/components/LineupSection";
 import TicketsPanelEffect from "@/components/TicketsPanelEffect";
 import TicketsHeaderSection from "@/components/TicketsHeaderSection";
@@ -21,14 +23,20 @@ export default function Home() {
       {/* 1. Hero — scroll-controlled video (450vh) */}
       <HeroSection />
 
-      {/* 2. Manifesto — Maré Virou */}
+      {/* 2. Manifesto — A Maré Não Parou */}
       <ManifestSection />
 
-      {/* 3. Line-up */}
+      {/* 2.1 Open Cooler */}
+      <OpenCoolerSection />
+
+      {/* 2.2 Line-up */}
       <LineupSection />
 
-      {/* 4. Personagem Tidal */}
+      {/* 2.3 Como é a Tidal — personagem + carrossel com fotos reais (src/data/media.ts) */}
       <CharacterSection />
+
+      {/* 2.4 Vídeos de drone e do evento (src/data/media.ts) */}
+      <TidalMediaSection />
 
       {/* 5. Quando e Onde — pina e escala para revelar Ingressos */}
       <TicketsPanelEffect />
