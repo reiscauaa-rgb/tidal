@@ -22,6 +22,19 @@ export default function ManifestSection() {
   };
 
   useGSAP(() => {
+    // Fixa a sessão quando o fim dela chega ao fim da tela, para a sessão seguinte
+    // (foto do Open Cooler) subir e sobrepor ela.
+    const section = containerRef.current;
+    if (section) {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "bottom bottom",
+        end: () => "+=" + section.offsetHeight,
+        pin: true,
+        pinSpacing: false,
+      });
+    }
+
     if (!containerRef.current || elementsRef.current.length === 0) return;
 
     // Wave animation: staggering upward motion with a smooth elastic/out ease

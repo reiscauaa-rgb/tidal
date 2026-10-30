@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Snowflake, Package, Zap, ShieldCheck } from "lucide-react";
 
@@ -26,27 +28,31 @@ const items = [
 
 export default function OpenCoolerSection() {
   return (
-    <section
-      id="open-cooler"
-      className="relative w-full py-16 md:py-24 px-4 sm:px-6"
-      style={{ background: "#F4E8D1", zIndex: 10 }}
-      aria-labelledby="open-cooler-title"
-    >
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 md:gap-14 items-center">
-        <div className="flex justify-center">
-          <Image
-            src="/images/after-open-cooler.jpg"
-            alt="Sobre o Open Cooler — personagem cromado com cooler de bebidas na praia"
-            width={896}
-            height={1200}
-            quality={80}
-            loading="lazy"
-            className="w-full max-w-md h-auto rounded-2xl shadow-[0_15px_45px_rgba(6,62,82,0.18)]"
-            sizes="(max-width: 768px) 92vw, 480px"
-          />
-        </div>
+    <>
+      {/* Sessão 1: imagem em tela cheia (sobe sobrepondo a sessão "A maré não parou") */}
+      <section
+        id="open-cooler"
+        className="relative w-full overflow-hidden"
+        style={{ zIndex: 10, height: "min(100vh, 125vw)" }}
+      >
+        <Image
+          src="/images/after-open-cooler.jpg"
+          alt="Sobre o Open Cooler — personagem cromado com cooler de bebidas na praia"
+          fill
+          quality={85}
+          priority={false}
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+      </section>
 
-        <div className="flex flex-col gap-6">
+      {/* Sessão 2: informações */}
+      <section
+        className="relative w-full py-16 md:py-24 px-4 sm:px-6"
+        style={{ background: "#F4E8D1", zIndex: 10 }}
+        aria-labelledby="open-cooler-title"
+      >
+        <div className="max-w-3xl mx-auto flex flex-col gap-6">
           <p
             className="text-[#13BBC4] font-bold tracking-[0.3em] uppercase text-xs"
             style={{ fontFamily: "Inter, sans-serif" }}
@@ -91,7 +97,7 @@ export default function OpenCoolerSection() {
             ))}
           </ul>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

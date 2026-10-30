@@ -1,17 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
-import { Package, ShieldCheck, Ticket, X } from "lucide-react";
+import { Package, ShieldCheck, Ticket } from "lucide-react";
 
-const SYMPLA_URL = "https://www.sympla.com.br/evento/tidal-fest/3526727";
+const SYMPLA_URL = "https://www.sympla.com.br/evento/tidal-after-party/3627093";
 
 export default function TicketsSection() {
-  const [showPopup, setShowPopup] = useState(false);
-
-  const handleBuyClick = () => setShowPopup(true);
-
-  const handleConfirm = () => {
+  const handleBuyClick = () => {
     if (typeof window !== "undefined") {
       const w = window as unknown as { fbq?: (...args: unknown[]) => void; gtag?: (...args: unknown[]) => void };
       if (typeof w.fbq === "function") {
@@ -27,7 +22,6 @@ export default function TicketsSection() {
         });
       }
     }
-    setShowPopup(false);
     window.open(SYMPLA_URL, "_blank");
   };
 
@@ -35,25 +29,48 @@ export default function TicketsSection() {
     <>
       <section
         id="ingressos"
-        className="relative pb-16 md:pb-24 pt-8"
+        className="relative pb-16 md:pb-24"
         style={{ background: "#F4E8D1" }}
         aria-labelledby="tickets-title"
       >
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col items-center">
+        {/* Título em HTML (texto removido da imagem para ter mais qualidade) */}
+        <div className="w-full text-center px-4 pt-12 md:pt-16">
+          <h2
+            id="tickets-title"
+            className="uppercase leading-[0.9]"
+            style={{ fontFamily: "var(--font-display), sans-serif", fontSize: "clamp(5rem, 20vw, 16rem)" }}
+          >
+            <span className="block text-[#063E52]">Aí, vai</span>
+            <span
+              className="block"
+              style={{
+                background: "linear-gradient(to bottom, #FFB347 0%, #FF7A1A 100%)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                color: "transparent",
+              }}
+            >
+              do quê?
+            </span>
+          </h2>
+        </div>
 
-          {/* Personagem com o ingresso */}
-          <div className="w-full flex justify-center">
-            <Image
-              src="/images/after-tickets.jpg"
-              alt="Pulseiras Comum e VIP do After Tidal"
-              width={896}
-              height={1200}
-              quality={75}
-              loading="lazy"
-              className="w-full max-w-sm h-auto rounded-2xl mb-6 shadow-xl"
-              style={{ display: "block" }}
-            />
-          </div>
+        {/* Personagem + pulseiras (PNG sem fundo e sem texto) em largura total */}
+        <div className="relative w-full mb-10 md:mb-14 -mt-4 md:-mt-10">
+          <Image
+            src="/images/ticket-character-notext.png"
+            alt="Personagem cromado apontando para as pulseiras Comum e VIP do After Tidal"
+            width={819}
+            height={689}
+            quality={85}
+            loading="lazy"
+            className="w-full h-auto block"
+            sizes="100vw"
+          />
+        </div>
+
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col items-center">
 
           {/* Card de ingressos */}
           <div
@@ -119,76 +136,6 @@ export default function TicketsSection() {
 
         </div>
       </section>
-
-      {/* Popup Comunicado */}
-      {showPopup && (
-        <div
-          className="fixed inset-0 z-[200] flex items-center justify-center p-4"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Comunicado importante antes de comprar"
-        >
-          {/* Backdrop com leve gradiente escuro */}
-          <div
-            className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black/95 backdrop-blur-sm"
-            onClick={() => setShowPopup(false)}
-          />
-
-          {/* Modal Container sem fundo azul */}
-          <div className="relative z-10 w-full max-w-sm flex flex-col gap-3" style={{ maxHeight: "90vh" }}>
-            
-            {/* Botão fechar */}
-            <div className="flex justify-end shrink-0">
-              <button
-                onClick={() => setShowPopup(false)}
-                className="text-white/60 hover:text-white transition-colors"
-                aria-label="Fechar"
-              >
-                <X size={28} />
-              </button>
-            </div>
-
-            {/* Área Rolável (Aviso, Imagem e Botão juntinhos) */}
-            <div className="flex flex-col items-center gap-3 overflow-y-auto no-scrollbar pb-4">
-              
-              <div className="flex items-center gap-2 shrink-0">
-                <span className="text-turquoise text-sm">⚠️</span>
-                <h3 className="text-white text-xs sm:text-sm uppercase tracking-widest font-bold" style={{ fontFamily: "Inter, sans-serif", textShadow: "0 2px 10px rgba(0,0,0,0.5)" }}>
-                  Aviso Importante
-                </h3>
-              </div>
-
-              <Image
-                src="/images/after-comunicado.jpg"
-                alt="Comunicado importante — Regras do Open Cooler"
-                width={600}
-                height={800}
-                quality={80}
-                loading="lazy"
-                className="w-full sm:w-[90%] rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] shrink-0"
-                style={{ maxHeight: "60vh", objectFit: "contain" }}
-              />
-              
-              <p className="text-white/80 text-center text-[10px] sm:text-xs uppercase tracking-wider px-2 shrink-0 drop-shadow-md" style={{ fontFamily: "Inter, sans-serif" }}>
-                Leia as regras do evento antes de prosseguir.
-              </p>
-
-              {/* Botão colado na imagem */}
-              <button
-                onClick={handleConfirm}
-                className="w-full py-4 mt-1 flex items-center justify-center text-xs sm:text-sm tracking-[0.2em] uppercase font-bold text-white transition-[transform,box-shadow] active:scale-95 rounded-md shadow-[0_0_20px_rgba(113,127,70,0.4)] hover:shadow-[0_0_30px_rgba(113,127,70,0.6)] shrink-0"
-                style={{
-                  background: "linear-gradient(135deg, #717f46 0%, #30371c 100%)",
-                  fontFamily: "Inter, sans-serif",
-                }}
-              >
-                ENTENDI — GARANTIR INGRESSO
-              </button>
-            </div>
-
-          </div>
-        </div>
-      )}
     </>
   );
 }
